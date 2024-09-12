@@ -1,5 +1,6 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/on_boarding_page.dart';
+import 'package:bodybuilderaiapp/view/login/signup_view.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -28,16 +29,16 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     {
       "title": "Welcome to Body Builder AI",
       "description": "Get your body in shape with our AI",
-      "img": "assets/img/onboarding1.png",
+      "img": "assets/img/onboarding1.webp",
     },
     {
       "title": "Welcome to Body Builder AI 2",
-      "description": "Get your body in shape with our AI 2",
-      "img": "assets/img/onboarding2.png",
+      "description": "Personalized workouts powered by artificial intelligence and machine learning.",
+      "img": "assets/img/onboarding2.webp",
     },
     {
       "title": "Welcome to Body Builder AI 3",
-      "description": "Get your body in shape with our AI 3",
+      "description": "AI-driven fitness coach for customized exercise routines and tracking.",
       "img": "assets/img/onboarding3.png",
     }
   ];
@@ -95,7 +96,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.easeIn);
                         } else {
-                          print("Last Page");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupView()));  
                         }
                       }),
                 ),
