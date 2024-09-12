@@ -4,16 +4,15 @@ import 'package:bodybuilderaiapp/common_widget/round_textfield.dart';
 import 'package:bodybuilderaiapp/view/login/complete_profile_view.dart';
 import 'package:flutter/material.dart';
 
-class SignupView extends StatefulWidget {
-  const SignupView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<SignupView> createState() => _SignupViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _SignupViewState extends State<SignupView> {
+class _LoginViewState extends State<LoginView> {
   bool isCheck = false;
-
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -31,23 +30,13 @@ class _SignupViewState extends State<SignupView> {
                     style: TextStyle(color: TColor.grey, fontSize: 16),
                   ),
                   Text(
-                    "Create an Account",
+                    "Login",
                     style: TextStyle(
                         color: TColor.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: media.height * 0.05),
-                  const RoundTextfield(
-                    hintText: "First Name",
-                    icon: Icons.person,
-                  ),
-                  SizedBox(height: media.height * 0.03),
-                  const RoundTextfield(
-                    hintText: "Last Name",
-                    icon: Icons.person,
-                  ),
-                  SizedBox(height: media.height * 0.03),
                   const RoundTextfield(
                     hintText: "Email",
                     icon: Icons.email,
@@ -93,8 +82,7 @@ class _SignupViewState extends State<SignupView> {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     const CompleteProfileView()));
-                      },
-                      type: RoundButtonType.bgGradient),
+                      }),
                 ],
               ),
             ),

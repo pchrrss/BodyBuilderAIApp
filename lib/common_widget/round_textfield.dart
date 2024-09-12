@@ -27,9 +27,9 @@ class RoundTextfield extends StatelessWidget {
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           hintText: hintText,
-          prefixIcon: Icon(icon, color: TColor.grey),
+          prefixIcon: Icon(icon, color: TColor.grey, size: 24,),
           suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: TColor.grey) : null,
-          hintStyle: TextStyle(color: TColor.grey, fontSize: 12),
+          hintStyle: TextStyle(color: TColor.grey, fontSize: 16),
         ),
       ),
     );
