@@ -14,34 +14,28 @@ class FocusAreaInputScreen extends StatefulWidget {
 class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
   List focusAreas = [
     {
-      "image": "assets/img/focus_legs.png",
-      "title": "Legs",
-      "subTitle": "Strengthen and tone your lower body."
+      "image": "assets/img/focusareas/legs.png",
+      "title": "Legs"
     },
     {
-      "image": "assets/img/focus_belly.png",
-      "title": "Belly",
-      "subTitle": "Sculpt and define your core."
+      "image": "assets/img/focusareas/abdomen.png",
+      "title": "Abdomen"
     },
     {
-      "image": "assets/img/focus_arms.png",
-      "title": "Arms",
-      "subTitle": "Build strength and muscle in your arms."
+      "image": "assets/img/focusareas/arms.png",
+      "title": "Arms"
     },
     {
-      "image": "assets/img/focus_chest.png",
-      "title": "Chest",
-      "subTitle": "Enhance and shape your chest muscles."
+      "image": "assets/img/focusareas/chest.png",
+      "title": "Chest"
     },
     {
-      "image": "assets/img/focus_back.png",
-      "title": "Back",
-      "subTitle": "Improve posture and back strength."
+      "image": "assets/img/focusareas/back.png",
+      "title": "Back"
     },
     {
-      "image": "assets/img/focus_fullbody.png",
-      "title": "Full Body",
-      "subTitle": "Train your entire body for overall fitness."
+      "image": "assets/img/focusareas/fullbody.png",
+      "title": "Full Body"
     },
   ];
 
@@ -125,7 +119,7 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
                           children: [
                             Image.asset(
                               focusArea["image"],
-                              width: media.width * 0.3,
+                              width: media.width * 0.2,
                               fit: BoxFit.fitWidth,
                             ),
                             const SizedBox(height: 10),
@@ -135,15 +129,6 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
                                 color: TColor.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              focusArea["subTitle"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: TColor.white,
-                                fontSize: 12,
                               ),
                             ),
                           ],

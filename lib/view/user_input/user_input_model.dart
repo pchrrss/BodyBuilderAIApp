@@ -1,21 +1,21 @@
 class UserInputModel {
-  String? ageRange;
-  String? bodyType;
   String? fitnessGoal;
-  String? bodyFatRange;
+  String? bodyType;
   Set<String>? focusAreas;
-  int? fitnessLevel;
   String? equipment;
+  String? ageRange;
+  String? bodyFatRange;
+  int? fitnessLevel;
   int? workoutDays;
 
   UserInputModel({
-    this.ageRange,
-    this.bodyType,
     this.fitnessGoal,
-    this.bodyFatRange,
+    this.bodyType,
     this.focusAreas,
-    this.fitnessLevel,
     this.equipment,
+    this.ageRange,
+    this.bodyFatRange,
+    this.fitnessLevel,
     this.workoutDays,
   });
 
@@ -23,13 +23,13 @@ class UserInputModel {
   String toString() {
     return '''
     UserInputModel {
-      ageRange: $ageRange,
-      bodyType: $bodyType,
       fitnessGoal: $fitnessGoal,
-      bodyFatRange: $bodyFatRange,
+      bodyType: $bodyType,
       focusArea: $focusAreas,
-      fitnessLevel: $fitnessLevel,
       equipment: $equipment,
+      ageRange: $ageRange,
+      bodyFatRange: $bodyFatRange,
+      fitnessLevel: $fitnessLevel,
       workoutDays: $workoutDays
     }
     ''';

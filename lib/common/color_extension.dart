@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
 class TColor {
+  
+  // static Color get primaryColor1 => const Color(0xFF0077B6);
+  // static Color get primaryColor2 => const Color(0xFF00B4D8);
+  // static Color get secondaryColor1 => const Color(0xFFFF6F61);
+  // static Color get secondaryColor2 => const Color(0xFFFFA69E);
+  
+
+
   static Color get primaryColor1 => const Color(0xFF4E6069);
   static Color get primaryColor2 => const Color(0xFF14202E);
 
-  static Color get secondaryColor1 => const Color(0xFFFF6F61);
-  static Color get secondaryColor2 => const Color(0xFFFFA69E);
+  static Color get secondaryColor1 => const Color(0xFFE8673E);
+  static Color get secondaryColor2 => const Color(0xFF632526);
   
   static List<Color> get primaryGradient => [primaryColor1, primaryColor2];
   static List<Color> get secondaryGradient => [secondaryColor1, secondaryColor2];
