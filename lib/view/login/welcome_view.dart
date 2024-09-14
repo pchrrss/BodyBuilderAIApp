@@ -1,5 +1,6 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
+import 'package:bodybuilderaiapp/view/main_tab/main_tab_view.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeView extends StatefulWidget {
@@ -37,7 +38,9 @@ class _WelcomeViewState extends State<WelcomeView> {
                         style: TextStyle(color: TColor.grey, fontSize: 12),
                       ),
                       const Spacer(),
-                      RoundButton(title: "Go To Home", onPressed: () {})
+                      RoundButton(title: "Go To Home", onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const MainTabView()));
+                      })
             ],),
         ),
       ),

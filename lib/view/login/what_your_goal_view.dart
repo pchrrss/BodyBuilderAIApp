@@ -17,7 +17,7 @@ class _WhatYourGoalViewState extends State<WhatYourGoalView> {
   
   List goals = [
     {"image": "assets/img/goals/cardio.webp", "title": "Lose Weight", "subTitle": "Achieve a leaner physique with a targeted approach."},
-    {"image": "", "title": "Gain Muscle", "subTitle": "Strengthen and grow your muscles with focused training."},
+    {"image": "assets/img/goals/goal_1.png", "title": "Gain Muscle", "subTitle": "Strengthen and grow your muscles with focused training."},
     {"image": "", "title": "Get Shredded", "subTitle": "Carve out defined muscles with precision workouts."},
     {"image": "", "title": "Maintain Fitness", "subTitle": "Stay in peak condition with balanced routines."},
   ];

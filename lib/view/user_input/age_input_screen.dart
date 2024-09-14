@@ -1,3 +1,4 @@
+import 'package:bodybuilderaiapp/view/user_input/body_type_input_screen.dart';
 import 'package:flutter/material.dart';
 
 class AgeInputScreen extends StatefulWidget {
@@ -8,7 +9,7 @@ class AgeInputScreen extends StatefulWidget {
 }
 
 class _AgeInputScreenState extends State<AgeInputScreen> {
-  String selectedAgeRange = '18-29'; // Default value
+  String selectedAgeRange = '18-29';
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,12 @@ class _AgeInputScreenState extends State<AgeInputScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Handle the next step, navigate to the next input screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BodyTypeInputScreen(),
+                  ),
+                );
               },
               child: Text("Next"),
             ),
