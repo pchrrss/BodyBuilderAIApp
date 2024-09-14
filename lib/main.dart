@@ -16,12 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Body Builder AI',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: TColor.primaryColor1,
         useMaterial3: true,
         fontFamily: "NotoSans",
       ),
-      home: const FitnessGoalInputScreen()
+      home: const StartedView()
     );
   }
 }

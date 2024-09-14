@@ -2,6 +2,7 @@ import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
 import 'package:bodybuilderaiapp/common_widget/slider_card.dart';
 import 'package:bodybuilderaiapp/view/user_input/body_type_input_screen.dart';
+import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -19,22 +20,22 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
 
   List fitnessGoals = [
     {
-      "image": "assets/img/gain_muscle.png",
+      "image": "assets/img/goals/gain_muscle.png",
       "title": "Gain Muscle",
       "subTitle": "Strengthen and grow your muscles with focused training."
     },
     {
-      "image": "assets/img/lose_weight.png",
+      "image": "assets/img/goals/lose_weight.png",
       "title": "Lose Weight",
       "subTitle": "Achieve a leaner physique with a targeted approach."
     },
     {
-      "image": "assets/img/get_shredded.png",
+      "image": "assets/img/goals/get_shredded.png",
       "title": "Get Shredded",
       "subTitle": "Carve out defined muscles with precision workouts."
     },
     {
-      "image": "assets/img/maintain_fitness.png",
+      "image": "assets/img/goals/maintain_fitness.png",
       "title": "Maintain Fitness",
       "subTitle": "Stay in peak condition with balanced routines."
     },
@@ -103,11 +104,12 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
                     title: "Confirm",
                     onPressed: () {
                       String selectedGoal = fitnessGoals[selectedGoalIndex]["title"]!;
+                      
                       print("Selected Fitness Goal: $selectedGoal");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const BodyTypeInputScreen(),
+                          builder: (context) => BodyTypeInputScreen(userInput: UserInputModel(fitnessGoal: selectedGoal)),
                         ),
                       );
                     },

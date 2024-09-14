@@ -1,6 +1,7 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
 import 'package:bodybuilderaiapp/view/on_boarding/on_boarding_view.dart';
+import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
 import 'package:flutter/material.dart';
 
 class StartedView extends StatefulWidget {
@@ -11,7 +12,7 @@ class StartedView extends StatefulWidget {
 }
 
 class _StartedViewState extends State<StartedView> {
-  bool isChangeColor = false;
+  bool isChangeColor = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _StartedViewState extends State<StartedView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const OnBoardingView()));
+                                      const FitnessGoalInputScreen()));
                         } else {
                           setState(() {
                             isChangeColor = true;

@@ -1,21 +1,37 @@
 class UserInputModel {
-  String ageRange;
-  String bodyType;
-  String fitnessGoal;
-  String bodyFatRange;
-  String focusArea;
-  int fitnessLevel;
-  String equipment;
-  int workoutDays;
+  String? ageRange;
+  String? bodyType;
+  String? fitnessGoal;
+  String? bodyFatRange;
+  Set<String>? focusAreas;
+  int? fitnessLevel;
+  String? equipment;
+  int? workoutDays;
 
   UserInputModel({
-    required this.ageRange,
-    required this.bodyType,
-    required this.fitnessGoal,
-    required this.bodyFatRange,
-    required this.focusArea,
-    required this.fitnessLevel,
-    required this.equipment,
-    required this.workoutDays,
+    this.ageRange,
+    this.bodyType,
+    this.fitnessGoal,
+    this.bodyFatRange,
+    this.focusAreas,
+    this.fitnessLevel,
+    this.equipment,
+    this.workoutDays,
   });
+
+  @override
+  String toString() {
+    return '''
+    UserInputModel {
+      ageRange: $ageRange,
+      bodyType: $bodyType,
+      fitnessGoal: $fitnessGoal,
+      bodyFatRange: $bodyFatRange,
+      focusArea: $focusAreas,
+      fitnessLevel: $fitnessLevel,
+      equipment: $equipment,
+      workoutDays: $workoutDays
+    }
+    ''';
+  }
 }

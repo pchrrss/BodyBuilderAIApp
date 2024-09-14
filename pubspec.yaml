@@ -64,6 +64,7 @@ flutter:
   assets:
     - assets/img/
     - assets/img/goals/
+    - assets/img/bodytypes/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

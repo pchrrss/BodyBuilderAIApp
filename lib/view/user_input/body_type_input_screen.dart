@@ -1,11 +1,14 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
 import 'package:bodybuilderaiapp/common_widget/slider_card.dart';
+import 'package:bodybuilderaiapp/view/user_input/focus_area_input_screen.dart';
+import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class BodyTypeInputScreen extends StatefulWidget {
-  const BodyTypeInputScreen({super.key});
+  final UserInputModel userInput;
+  const BodyTypeInputScreen({super.key, required this.userInput});
 
   @override
   State<BodyTypeInputScreen> createState() => _BodyTypeInputScreenState();
@@ -16,9 +19,9 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
   int selectedBodyTypeIndex = 0;
 
   List bodyTypes = [
-    {"image": "assets/img/body_slim.png", "title": "Slim", "subTitle": "A lean and toned figure with a slender build."},
-    {"image": "assets/img/body_average.png", "title": "Average", "subTitle": "A balanced figure with moderate muscle and body fat."},
-    {"image": "assets/img/body_heavy.png", "title": "Heavy", "subTitle": "A stockier, broader figure with higher body mass and fat."},
+    {"image": "assets/img/bodytypes/slim.png", "title": "Slim", "subTitle": "A lean and toned figure with a slender build."},
+    {"image": "assets/img/bodytypes/average.png", "title": "Average", "subTitle": "A balanced figure with moderate muscle and body fat."},
+    {"image": "assets/img/bodytypes/heavy.png", "title": "Heavy", "subTitle": "A stockier, broader figure with higher body mass and fat."},
   ];
 
   @override
@@ -83,8 +86,14 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
                   RoundButton(
                     title: "Confirm",
                     onPressed: () {
-                      String selectedBodyType = bodyTypes[selectedBodyTypeIndex]["title"]!;
-                      print("Selected Body Type: $selectedBodyType");
+                      widget.userInput.bodyType = bodyTypes[selectedBodyTypeIndex]["title"]!;
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FocusAreaInputScreen(userInput: widget.userInput),
+                        ),
+                      );
                     },
                   ),
                 ],

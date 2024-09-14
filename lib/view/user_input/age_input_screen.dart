@@ -38,12 +38,12 @@ class _AgeInputScreenState extends State<AgeInputScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const BodyTypeInputScreen(),
                   ),
-                );
+                );*/
               },
               child: Text("Next"),
             ),
