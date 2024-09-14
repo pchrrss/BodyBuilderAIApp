@@ -93,8 +93,7 @@ class _SignupViewState extends State<SignupView> {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     const CompleteProfileView()));
-                      },
-                      type: RoundButtonType.bgGradient),
+                      }),
                 ],
               ),
             ),

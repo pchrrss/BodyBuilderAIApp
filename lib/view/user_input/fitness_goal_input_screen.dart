@@ -18,29 +18,6 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
       CarouselSliderController();
   int selectedGoalIndex = 0;
 
-  List fitnessGoals = [
-    {
-      "image": "assets/img/goals/gain_muscle.png",
-      "title": "Gain Muscle",
-      "subTitle": "Strengthen and grow your muscles with focused training."
-    },
-    {
-      "image": "assets/img/goals/lose_weight.png",
-      "title": "Lose Weight",
-      "subTitle": "Achieve a leaner physique with a targeted approach."
-    },
-    {
-      "image": "assets/img/goals/get_shredded.png",
-      "title": "Get Shredded",
-      "subTitle": "Carve out defined muscles with precision workouts."
-    },
-    {
-      "image": "assets/img/goals/maintain_fitness.png",
-      "title": "Maintain Fitness",
-      "subTitle": "Stay in peak condition with balanced routines."
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -52,7 +29,7 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
           children: [
             Center(
               child: CarouselSlider(
-                items: fitnessGoals.asMap().entries.map((entry) {
+                items: UserInputModel.fitnessGoalOptions.asMap().entries.map((entry) {
                   int index = entry.key;
                   var goal = entry.value;
                   return SliderCard(
@@ -103,9 +80,8 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
                   RoundButton(
                     title: "Confirm",
                     onPressed: () {
-                      String selectedGoal = fitnessGoals[selectedGoalIndex]["title"]!;
+                      String selectedGoal = UserInputModel.fitnessGoalOptions[selectedGoalIndex]["title"]!;
                       
-                      print("Selected Fitness Goal: $selectedGoal");
                       Navigator.push(
                         context,
                         MaterialPageRoute(

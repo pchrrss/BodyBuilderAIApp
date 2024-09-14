@@ -18,12 +18,6 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
   CarouselSliderController buttonCarouselController = CarouselSliderController();
   int selectedBodyTypeIndex = 0;
 
-  List bodyTypes = [
-    {"image": "assets/img/bodytypes/slim.png", "title": "Slim", "subTitle": "A lean and toned figure with a slender build."},
-    {"image": "assets/img/bodytypes/average.png", "title": "Average", "subTitle": "A balanced figure with moderate muscle and body fat."},
-    {"image": "assets/img/bodytypes/heavy.png", "title": "Heavy", "subTitle": "A stockier, broader figure with higher body mass and fat."},
-  ];
-
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -35,7 +29,7 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
           children: [
             Center(
               child: CarouselSlider(
-                items: bodyTypes.asMap().entries.map((entry) {
+                items: UserInputModel.bodyTypeOptions.asMap().entries.map((entry) {
                   int index = entry.key;
                   var bodyType = entry.value;
                   return SliderCard(
@@ -86,7 +80,7 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
                   RoundButton(
                     title: "Confirm",
                     onPressed: () {
-                      widget.userInput.bodyType = bodyTypes[selectedBodyTypeIndex]["title"]!;
+                      widget.userInput.bodyType = UserInputModel.bodyTypeOptions[selectedBodyTypeIndex]["title"]!;
 
                       Navigator.push(
                         context,

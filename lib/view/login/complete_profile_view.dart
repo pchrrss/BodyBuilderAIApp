@@ -1,7 +1,7 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
 import 'package:bodybuilderaiapp/common_widget/round_textfield.dart';
-import 'package:bodybuilderaiapp/view/login/what_your_goal_view.dart';
+import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
 import 'package:flutter/material.dart';
 
 class CompleteProfileView extends StatefulWidget {
@@ -145,9 +145,8 @@ class _CompleteProfileViewState extends State<CompleteProfileView> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const WhatYourGoalView()));
-                                },
-                                type: RoundButtonType.bgGradient),
+                                              const FitnessGoalInputScreen()));
+                                }),
                           ],
                         ),
                       )

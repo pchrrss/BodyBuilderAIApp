@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
+import 'package:bodybuilderaiapp/view/on_boarding/started_view.dart';
 import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: "NotoSans",
       ),
-      home: const FitnessGoalInputScreen()
+      home: const StartedView()
     );
   }
 }

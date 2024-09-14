@@ -1,5 +1,6 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
+import 'package:bodybuilderaiapp/view/user_input/fitness_details_input_screen.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,33 +13,6 @@ class FocusAreaInputScreen extends StatefulWidget {
 }
 
 class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
-  List focusAreas = [
-    {
-      "image": "assets/img/focusareas/legs.png",
-      "title": "Legs"
-    },
-    {
-      "image": "assets/img/focusareas/abdomen.png",
-      "title": "Abdomen"
-    },
-    {
-      "image": "assets/img/focusareas/arms.png",
-      "title": "Arms"
-    },
-    {
-      "image": "assets/img/focusareas/chest.png",
-      "title": "Chest"
-    },
-    {
-      "image": "assets/img/focusareas/back.png",
-      "title": "Back"
-    },
-    {
-      "image": "assets/img/focusareas/fullbody.png",
-      "title": "Full Body"
-    },
-  ];
-
   Set<int> selectedFocusAreas = {};
 
   @override
@@ -78,9 +52,9 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
                     mainAxisSpacing: 10,
                     childAspectRatio: 0.90,
                   ),
-                  itemCount: focusAreas.length,
+                  itemCount: UserInputModel.focusAreaOptions.length,
                   itemBuilder: (context, index) {
-                    var focusArea = focusAreas[index];
+                    var focusArea = UserInputModel.focusAreaOptions[index];
                     bool isSelected = selectedFocusAreas.contains(index);
 
                     return GestureDetector(
@@ -144,9 +118,17 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
                   title: "Confirm",
                   onPressed: () {
                     widget.userInput.focusAreas = selectedFocusAreas
-                        .map((index) => focusAreas[index]["title"].toString())
+                        .map((index) => UserInputModel.focusAreaOptions[index]["title"].toString())
                         .toSet();
-                    print(widget.userInput);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FitnessDetailsInputScreen(
+                          userInput: widget.userInput,
+                        ),
+                      ),
+                    );
+
                   },
                 ),
               ),

@@ -1,10 +1,11 @@
-import 'dart:math';
-
+import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ApiService {
-  static Future<String> getOnboardingText() async {
+  static Future<String> generateFitnessPlan(UserInputModel userInput) async {
+    final fitnessPlanRequest = userInput.generateFitnessPlanRequest();
+    print(fitnessPlanRequest);
     var url = Uri.parse('http://localhost:11434/api/generate');
     var response = await http.post(
       url,
@@ -13,17 +14,15 @@ class ApiService {
       },
       body: jsonEncode({
         "model": "llama3",
-        "prompt": "Generate a short notice for a fitness app using AI, between 5 to 10 words.",
+        "prompt": fitnessPlanRequest,
         //fixme ?
         "stream": false,
       }),
     );
 
-    print(response);
-
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data['response']; // Assuming the API returns the text in a 'text' field
+      return data['response'];
     } else {
       throw Exception('Failed to generate text');
     }
