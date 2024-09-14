@@ -1,3 +1,6 @@
+
+
+import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
@@ -31,11 +34,9 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
         future: fetchFitnessPlan(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return const FitnessLoadingIndicator();
           } else if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text(
                 'Failed to fetch fitness plan',
                 style: TextStyle(color: Colors.red),
@@ -57,7 +58,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
@@ -73,7 +74,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text('No fitness plan available'),
             );
           }
