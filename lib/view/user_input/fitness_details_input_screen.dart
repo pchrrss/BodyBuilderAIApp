@@ -1,4 +1,4 @@
-import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
+import 'package:bodybuilderaiapp/view/home/main_app_with_navigation.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
@@ -168,7 +168,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          FitnessPlanResultScreen(userInput: widget.userInput),
+                          MainAppWithNavigation(userInput: widget.userInput),
                     ),
                   );
                 },

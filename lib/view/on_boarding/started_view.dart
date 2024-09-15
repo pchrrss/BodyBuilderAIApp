@@ -1,6 +1,5 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
-import 'package:bodybuilderaiapp/view/on_boarding/on_boarding_view.dart';
 import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +38,9 @@ class _StartedViewState extends State<StartedView> {
                         color: isChangeColor ? TColor.white : TColor.black)),
                 Text(
                   "Get your body in shape with our AI",
-                  style: TextStyle(fontSize: 18, color: isChangeColor ? TColor.white : TColor.black),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: isChangeColor ? TColor.white : TColor.black),
                 ),
                 const Spacer(),
                 SafeArea(

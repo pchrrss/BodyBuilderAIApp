@@ -13,7 +13,7 @@ class _MainTabViewState extends State<MainTabView> {
   var selectTab = 0;
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomAppBar(
