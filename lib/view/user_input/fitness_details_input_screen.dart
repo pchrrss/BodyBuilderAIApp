@@ -183,7 +183,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          MainAppWithNavigation(userInput: widget.userInput),
+                          MainAppWithNavigation(userId: userId, userInput: widget.userInput),
                     ),
                   );
                 },

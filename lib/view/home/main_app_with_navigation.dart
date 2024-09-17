@@ -7,9 +7,11 @@ import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 
 class MainAppWithNavigation extends StatefulWidget {
+  final String userId;
   final UserInputModel userInput;
 
-  const MainAppWithNavigation({super.key, required this.userInput});
+  const MainAppWithNavigation(
+      {super.key, required this.userId, required this.userInput});
 
   @override
   State<MainAppWithNavigation> createState() => _MainAppWithNavigationState();
@@ -24,7 +26,7 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   void initState() {
     super.initState();
     _pages = [
-      FitnessPlanResultScreen(userInput: widget.userInput),
+      FitnessPlanResultScreen(userId: widget.userId, userInput: widget.userInput),
       CalendarScreen(),
       FavoriteScreen(userInput: widget.userInput),
       const ProfileView()
@@ -34,12 +36,13 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_getAppBarTitle(_currentIndex),
-            style: TextStyle(color: TColor.white, fontWeight: FontWeight.bold)),
-        backgroundColor: TColor.primaryColor1,
-        automaticallyImplyLeading: false,
-      ),
+      // fixme - how manage app bar ? on differnte screen or in main app ?
+      // appBar: AppBar(
+      //   title: Text(_getAppBarTitle(_currentIndex),
+      //       style: TextStyle(color: TColor.white, fontWeight: FontWeight.bold)),
+      //   backgroundColor: TColor.primaryColor1,
+      //   automaticallyImplyLeading: false,
+      // ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
