@@ -1,5 +1,4 @@
 import 'package:bodybuilderaiapp/services/user_input_service.dart';
-import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
 import 'package:bodybuilderaiapp/view/home/main_app_with_navigation.dart';
 import 'package:bodybuilderaiapp/view/login/login_view.dart';
 import 'package:bodybuilderaiapp/view/on_boarding/started_view.dart';
@@ -21,7 +20,7 @@ class AuthGuard extends StatelessWidget {
         final user = snapshot.data!;
         final userId = user.uid;
 
-        return FutureBuilder<UserInputModel>(
+        return FutureBuilder<UserInputModel?>(
           future: UserInputService().loadUserInputs(userId),
           builder: (context, userInputSnapshot) {
             if (userInputSnapshot.connectionState == ConnectionState.waiting) {

@@ -26,6 +26,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: TColor.primaryColor1,
+          scaffoldBackgroundColor: TColor.white,
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              
+            ),
+          ),
+          outlinedButtonTheme: const OutlinedButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll<Color>(Colors.blue),
+              foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+            )
+          ),
           useMaterial3: true,
           fontFamily: "NotoSans",
         ),

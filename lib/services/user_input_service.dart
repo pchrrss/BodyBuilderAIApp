@@ -18,7 +18,7 @@ class UserInputService {
     });
   }
 
-  Future<UserInputModel> loadUserInputs(String userId) async {
+  Future<UserInputModel?> loadUserInputs(String userId) async {
     final docUser = usersCollection.doc(userId);
     final snapshot = await docUser.get();
 
@@ -37,7 +37,7 @@ class UserInputService {
         workoutDays: data['workoutDays'] as int?,
       );
     } else {
-      return UserInputModel();
+      return null;
     }
   }
 

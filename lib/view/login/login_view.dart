@@ -13,16 +13,11 @@ class LoginView extends StatelessWidget {
         EmailAuthProvider(),
         GoogleProvider(clientId: dotenv.env['GOOGLE_CLIENT_ID']!)
       ],
+      showPasswordVisibilityToggle: true,
       headerBuilder: (context, constraints, shrinkOffset) {
-        return const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            'Welcome to Body Builder AI',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Image.asset('assets/img/logo.png', fit: BoxFit.fitHeight),
         );
       },
       subtitleBuilder: (context, action) {

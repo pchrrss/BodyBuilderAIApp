@@ -1,5 +1,4 @@
 import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
-import 'package:bodybuilderaiapp/services/auth_service.dart';
 import 'package:bodybuilderaiapp/services/user_input_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +85,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
       backgroundColor: TColor.white,
       appBar: AppBar(
         title: const Text("Fitness Plan"),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
