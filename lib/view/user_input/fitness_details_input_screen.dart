@@ -48,6 +48,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
                   labelText: "Age Range",
                   border: OutlineInputBorder(),
                 ),
+                dropdownColor: TColor.white,
                 value: selectedAgeRange,
                 items: UserInputModel.ageRangeOptions.map((ageRange) {
                   return DropdownMenuItem(
@@ -71,6 +72,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
                   labelText: "Body Fat Range",
                   border: OutlineInputBorder(),
                 ),
+                dropdownColor: TColor.white,
                 value: selectedBodyFatRange,
                 items: UserInputModel.bodyFatRangeOptions.map((bodyFatRange) {
                   return DropdownMenuItem(
@@ -90,6 +92,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
                   labelText: "Available Equipment",
                   border: OutlineInputBorder(),
                 ),
+                dropdownColor: TColor.white,
                 value: selectedEquipment,
                 items: UserInputModel.equipmentOptions.map((equipment) {
                   return DropdownMenuItem(

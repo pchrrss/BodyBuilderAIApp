@@ -1,9 +1,17 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
-import 'package:bodybuilderaiapp/view/on_boarding/started_view.dart';
-import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
+import 'package:bodybuilderaiapp/firebase_options.dart';
+import 'package:bodybuilderaiapp/view/login/auth_guard.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -14,14 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Body Builder AI',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: TColor.primaryColor1,
-        useMaterial3: true,
-        fontFamily: "NotoSans",
-      ),
-      home: const StartedView()
-    );
+        title: 'Body Builder AI',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: TColor.primaryColor1,
+          useMaterial3: true,
+          fontFamily: "NotoSans",
+        ),
+        home: const AuthGuard());
   }
 }

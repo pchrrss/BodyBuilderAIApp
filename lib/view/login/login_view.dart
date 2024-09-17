@@ -1,92 +1,54 @@
-import 'package:bodybuilderaiapp/common/color_extension.dart';
-import 'package:bodybuilderaiapp/common_widget/round_button.dart';
-import 'package:bodybuilderaiapp/common_widget/round_textfield.dart';
-import 'package:bodybuilderaiapp/view/login/complete_profile_view.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
-  bool isCheck = false;
-  @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
-    return Scaffold(
-        backgroundColor: TColor.white,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Plop",
-                    style: TextStyle(color: TColor.grey, fontSize: 16),
-                  ),
-                  Text(
-                    "Login",
-                    style: TextStyle(
-                        color: TColor.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: media.height * 0.05),
-                  const RoundTextfield(
-                    hintText: "Email",
-                    icon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: media.height * 0.03),
-                  const RoundTextfield(
-                    hintText: "Password",
-                    icon: Icons.lock,
-                    //fixme
-                    suffixIcon: Icons.visibility,
-                    obscureText: true,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  SizedBox(height: media.height * 0.03),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isCheck = !isCheck;
-                            });
-                          },
-                          icon: Icon(
-                            isCheck
-                                ? Icons.check_box
-                                : Icons.check_box_outline_blank,
-                            color: TColor.grey,
-                          )),
-                      Expanded(
-                          child: Text(
-                        "I agree to the Terms of Service and Privacy Policy",
-                        style: TextStyle(color: TColor.grey, fontSize: 12),
-                      ))
-                    ],
-                  ),
-                  SizedBox(height: media.height * 0.2),
-                  RoundButton(
-                      title: "Register",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CompleteProfileView()));
-                      }),
-                ],
-              ),
+    return SignInScreen(
+      providers: [
+        EmailAuthProvider(),
+        GoogleProvider(clientId: dotenv.env['GOOGLE_CLIENT_ID']!)
+      ],
+      headerBuilder: (context, constraints, shrinkOffset) {
+        return const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            'Welcome to Body Builder AI',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ));
+        );
+      },
+      subtitleBuilder: (context, action) {
+        return action == AuthAction.signIn
+            ? const Text(
+                'Sign in to continue',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              )
+            : const Text(
+                'Sign up to continue',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              );
+      },
+      footerBuilder: (context, action) {
+        return const Padding(
+          padding: EdgeInsets.only(top: 16),
+          child: Text(
+            'By signing in, you agree to our terms and conditions.',
+            style: TextStyle(color: Colors.grey),
+          ),
+        );
+      },
+    );
   }
 }

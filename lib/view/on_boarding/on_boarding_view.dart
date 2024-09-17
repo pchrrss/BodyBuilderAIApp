@@ -1,6 +1,6 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/on_boarding_page.dart';
-import 'package:bodybuilderaiapp/view/login/signup_view.dart';
+import 'package:bodybuilderaiapp/view/login/auth_guard.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -96,7 +96,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.easeIn);
                         } else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupView()));  
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthGuard()));  
                         }
                       }),
                 ),

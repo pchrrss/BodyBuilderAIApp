@@ -1,7 +1,9 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/view/home/favorite_screen.dart';
 import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
+import 'package:bodybuilderaiapp/view/login/profile_view.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
+
 import 'package:flutter/material.dart';
 
 class MainAppWithNavigation extends StatefulWidget {
@@ -25,7 +27,7 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
       FitnessPlanResultScreen(userInput: widget.userInput),
       CalendarScreen(),
       FavoriteScreen(userInput: widget.userInput),
-      ProfileScreen(),
+      const ProfileView()
     ];
   }
 
@@ -33,12 +35,12 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_getAppBarTitle(_currentIndex), style: TextStyle(color: TColor.white)),
+        title: Text(_getAppBarTitle(_currentIndex),
+            style: TextStyle(color: TColor.white, fontWeight: FontWeight.bold)),
         backgroundColor: TColor.primaryColor1,
         automaticallyImplyLeading: false,
       ),
       body: _pages[_currentIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -97,18 +99,6 @@ class CalendarScreen extends StatelessWidget {
     return Center(
       child: Text(
         'Calendar Screen',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Profile Screen',
         style: TextStyle(fontSize: 24),
       ),
     );
