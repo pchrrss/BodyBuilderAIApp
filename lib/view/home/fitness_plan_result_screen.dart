@@ -4,7 +4,7 @@ import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
-import 'package:bodybuilderaiapp/services/api_service.dart';  // Import your ApiService
+import 'package:bodybuilderaiapp/services/api_service.dart';
 
 class FitnessPlanResultScreen extends StatefulWidget {
   final UserInputModel userInput;

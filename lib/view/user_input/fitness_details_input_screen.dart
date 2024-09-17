@@ -1,3 +1,5 @@
+import 'package:bodybuilderaiapp/services/auth_service.dart';
+import 'package:bodybuilderaiapp/services/user_input_service.dart';
 import 'package:bodybuilderaiapp/view/home/main_app_with_navigation.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,9 @@ class FitnessDetailsInputScreen extends StatefulWidget {
 }
 
 class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
+  final UserInputService _userInputService = UserInputService();
+  final AuthService _authService = AuthService();
+
   String? selectedAgeRange;
   String? selectedBodyFatRange;
   String? selectedEquipment;
@@ -160,12 +165,19 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
               const Spacer(),
               RoundButton(
                 title: "Confirm",
-                onPressed: () {
+                onPressed: () async {
                   widget.userInput.ageRange = selectedAgeRange;
                   widget.userInput.bodyFatRange = selectedBodyFatRange;
                   widget.userInput.equipment = selectedEquipment;
                   widget.userInput.fitnessLevel = fitnessLevel.round();
                   widget.userInput.workoutDays = workoutDays.round();
+
+                  String? userId = _authService.getCurrentUserId();
+                  if (userId == null) {
+                    //fixme manage error
+                    return;
+                  }
+                  await _userInputService.saveUserInputs(userId, widget.userInput);
 
                   Navigator.push(
                     context,
