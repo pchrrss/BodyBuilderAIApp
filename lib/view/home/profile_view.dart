@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
+import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
 import 'package:bodybuilderaiapp/view/login/logout_view.dart';
 import 'package:bodybuilderaiapp/view/user_input/fitness_goal_input_screen.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
@@ -11,9 +12,8 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-        automaticallyImplyLeading: false,
+      appBar: TransparentAppBarWithBorder(
+        title: 'Profile',
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

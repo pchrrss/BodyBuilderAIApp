@@ -1,3 +1,4 @@
+import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
@@ -30,6 +31,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
+      appBar: const TransparentAppBarWithBorder(title: 'Favorite'),
       body: FutureBuilder<Map<String, dynamic>>(
         future: fetchFitnessPlan(),
         builder: (context, snapshot) {

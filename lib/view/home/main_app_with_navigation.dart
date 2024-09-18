@@ -1,4 +1,3 @@
-import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/view/home/favorite_screen.dart';
 import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
 import 'package:bodybuilderaiapp/view/home/profile_view.dart';
@@ -26,7 +25,8 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   void initState() {
     super.initState();
     _pages = [
-      FitnessPlanResultScreen(userId: widget.userId, userInput: widget.userInput),
+      FitnessPlanResultScreen(
+          userId: widget.userId, userInput: widget.userInput),
       CalendarScreen(),
       FavoriteScreen(userInput: widget.userInput),
       ProfileView(userInput: widget.userInput)
@@ -44,38 +44,46 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
       //   automaticallyImplyLeading: false,
       // ),
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        backgroundColor: TColor.primaryColor1,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 25,
-        unselectedItemColor: TColor.secondaryColor2,
-        selectedItemColor: TColor.secondaryColor1,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: "Plan",
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).primaryColor,
+              width: 2,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: "Calendar",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorite",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-        ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _currentIndex,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.fitness_center),
+              label: 'Plan',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

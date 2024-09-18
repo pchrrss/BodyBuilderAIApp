@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
+import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
 import 'package:bodybuilderaiapp/services/user_input_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +84,11 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: AppBar(
+      appBar: /*AppBar(
         title: const Text("Fitness Plan"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -93,7 +97,8 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
             tooltip: 'Regenerate Plan',
           )
         ],
-      ),
+      ),*/
+      const TransparentAppBarWithBorder(title: 'Fitness Plan'),
       body: FutureBuilder<String>(
         future: fitnessPlanFuture,
         builder: (context, snapshot) {
