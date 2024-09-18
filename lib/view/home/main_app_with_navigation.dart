@@ -1,7 +1,7 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/view/home/favorite_screen.dart';
 import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
-import 'package:bodybuilderaiapp/view/login/profile_view.dart';
+import 'package:bodybuilderaiapp/view/home/profile_view.dart';
 import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
       FitnessPlanResultScreen(userId: widget.userId, userInput: widget.userInput),
       CalendarScreen(),
       FavoriteScreen(userInput: widget.userInput),
-      const ProfileView()
+      ProfileView(userInput: widget.userInput)
     ];
   }
 
