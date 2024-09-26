@@ -21,6 +21,7 @@ class TransparentAppBarWithBorder extends StatelessWidget
         ),
       ),
       child: AppBar(
+        excludeHeaderSemantics: true,
         elevation: 0,
         title: Row(
           children: [

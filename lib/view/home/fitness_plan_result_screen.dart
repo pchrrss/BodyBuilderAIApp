@@ -1,11 +1,10 @@
+import 'package:bodybuilderaiapp/service/fitness_plan_service.dart';
+import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
 import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
-import 'package:bodybuilderaiapp/services/user_input_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
-import 'package:bodybuilderaiapp/services/api_service.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
+import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 
 class FitnessPlanResultScreen extends StatefulWidget {
   final String userId;
@@ -20,86 +19,23 @@ class FitnessPlanResultScreen extends StatefulWidget {
 }
 
 class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
-  final UserInputService _userInputService = UserInputService();
+  final FitnessPlanService _fitnessPlanService = FitnessPlanService();
 
-  Future<String>? fitnessPlanFuture;
+  Future<FitnessPlanResult>? fitnessPlanFuture;
 
   @override
   void initState() {
     super.initState();
-    fitnessPlanFuture = _fetchOrGenerateFitnessPlan();
-  }
-
-  Future<String> _fetchOrGenerateFitnessPlan() async {
-    try {
-      final existingPlans =
-          await _userInputService.loadFitnessPlans(widget.userId);
-      if (existingPlans.isNotEmpty) {
-        return existingPlans.first['plan'];
-      } else {
-        return _generateAndSavePlan();
-      }
-    } catch (e) {
-      _showErrorSnackBar('Failed to fetch fitness plan');
-      throw Exception('Error loading/generating plan: $e');
-    }
-  }
-
-  Future<String> _generateAndSavePlan() async {
-    try {
-      final newPlan = await ApiService.generateFitnessPlan(widget.userInput);
-      _savePlan(newPlan);
-      return newPlan;
-    } catch (e) {
-      _showErrorSnackBar('Failed to generate fitness plan');
-      throw Exception('Error generating plan: $e');
-    }
-  }
-
-  void _savePlan(String fitnessPlan) async {
-    try {
-      final fitnessPlanData = {
-        'plan': fitnessPlan,
-        'createdAt': FieldValue.serverTimestamp(),
-      };
-      await _userInputService.saveFitnessPlan(widget.userId, fitnessPlanData);
-    } catch (e) {
-      _showErrorSnackBar('Failed to save fitness plan: $e');
-    }
-  }
-
-  void _regenerateFitnessPlan() async {
-    setState(() {
-      fitnessPlanFuture = _generateAndSavePlan();
-    });
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    fitnessPlanFuture =
+        _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: /*AppBar(
-        title: const Text("Fitness Plan"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _regenerateFitnessPlan,
-            tooltip: 'Regenerate Plan',
-          )
-        ],
-      ),*/
-      const TransparentAppBarWithBorder(title: 'Fitness Plan'),
-      body: FutureBuilder<String>(
+      appBar: const TransparentAppBarWithBorder(title: 'Fitness Plan'),
+      body: FutureBuilder<FitnessPlanResult>(
         future: fitnessPlanFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -107,7 +43,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
           } else if (snapshot.hasError) {
             return _buildErrorState();
           } else if (snapshot.hasData) {
-            String fitnessPlan = snapshot.data!;
+            FitnessPlanResult fitnessPlan = snapshot.data!;
             return _buildSuccessState(fitnessPlan);
           } else {
             return const Center(
@@ -119,33 +55,74 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
     );
   }
 
-  Widget _buildSuccessState(String fitnessPlan) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildSuccessState(FitnessPlanResult fitnessPlan) {
+    return DefaultTabController(
+      length: fitnessPlan.workoutPlan.length,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Generated Fitness Plan:',
-            style: TextStyle(
-              color: TColor.black,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+          TabBar(
+            isScrollable: true,
+            labelColor: TColor.black,
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: TColor.primaryColor1,
+            tabs: fitnessPlan.workoutPlan.map((dayPlan) {
+              return Tab(text: dayPlan.day);
+            }).toList(),
           ),
-          const SizedBox(height: 10),
           Expanded(
-            child: SingleChildScrollView(
-              child: Text(
-                fitnessPlan,
-                style: TextStyle(
-                  color: TColor.grey,
-                  fontSize: 18,
-                ),
-              ),
+            child: TabBarView(
+              children: fitnessPlan.workoutPlan.map((dayPlan) {
+                return _buildWorkoutDay(dayPlan);
+              }).toList(),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildWorkoutDay(WorkoutDay dayPlan) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.builder(
+        itemCount: dayPlan.exercises.length,
+        itemBuilder: (context, index) {
+          final exercise = dayPlan.exercises[index];
+          return _buildExerciseCard(exercise);
+        },
+      ),
+    );
+  }
+
+  Widget _buildExerciseCard(Exercise exercise) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              exercise.name,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -163,7 +140,8 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                fitnessPlanFuture = _fetchOrGenerateFitnessPlan();
+                fitnessPlanFuture =
+                    _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
               });
             },
             child: const Text('Retry'),

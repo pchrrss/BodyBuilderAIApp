@@ -1,12 +1,13 @@
+import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 
-class UserInputService {
-  final CollectionReference usersCollection =
+class FirebaseFirestoreHttpService {
+  final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
 
   Future<void> saveUserInputs(String userId, UserInputModel userInput) async {
-    await usersCollection.doc(userId).set({
+    await _usersCollection.doc(userId).set({
       'ageRange': userInput.ageRange ?? '',
       'bodyType': userInput.bodyType ?? '',
       'fitnessGoal': userInput.fitnessGoal ?? '',
@@ -19,7 +20,7 @@ class UserInputService {
   }
 
   Future<UserInputModel?> loadUserInputs(String userId) async {
-    final docUser = usersCollection.doc(userId);
+    final docUser = _usersCollection.doc(userId);
     final snapshot = await docUser.get();
 
     if (snapshot.exists) {
@@ -42,22 +43,32 @@ class UserInputService {
   }
 
   Future<void> saveFitnessPlan(
-      String userId, Map<String, dynamic> fitnessPlan) async {
-    await usersCollection
+      String userId, Map<String, dynamic> fitnessPlanData) async {
+    await _usersCollection
         .doc(userId)
         .collection('fitnessPlans')
-        .add(fitnessPlan);
+        .add({
+          ...fitnessPlanData,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
   }
 
-  Future<List<Map<String, dynamic>>> loadFitnessPlans(String userId) async {
-    QuerySnapshot querySnapshot = await usersCollection
-        .doc(userId)
-        .collection('fitnessPlans')
-        .orderBy('createdAt', descending: true)
-        .get();
+  Future<FitnessPlanResult?> fetchLatestFitnessPlan(String userId) async {
+    try {
+      var snapshot = await _usersCollection
+          .doc(userId)
+          .collection('fitnessPlans')
+          .orderBy('createdAt', descending: true)
+          .limit(1)
+          .get();
 
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+      if (snapshot.docs.isNotEmpty) {
+        var doc = snapshot.docs.first;
+        return FitnessPlanResult.fromJson(doc.data());
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Failed to fetch fitness plan from Firestore: $e');
+    }
   }
 }

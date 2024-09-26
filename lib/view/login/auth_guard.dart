@@ -1,8 +1,8 @@
-import 'package:bodybuilderaiapp/services/user_input_service.dart';
+import 'package:bodybuilderaiapp/service/firebase_firestore_http_service.dart';
 import 'package:bodybuilderaiapp/view/home/main_app_with_navigation.dart';
 import 'package:bodybuilderaiapp/view/login/login_view.dart';
 import 'package:bodybuilderaiapp/view/on_boarding/started_view.dart';
-import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class AuthGuard extends StatelessWidget {
         final userId = user.uid;
 
         return FutureBuilder<UserInputModel?>(
-          future: UserInputService().loadUserInputs(userId),
+          future: FirebaseFirestoreHttpService().loadUserInputs(userId),
           builder: (context, userInputSnapshot) {
             if (userInputSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

@@ -1,7 +1,7 @@
-import 'package:bodybuilderaiapp/services/auth_service.dart';
-import 'package:bodybuilderaiapp/services/user_input_service.dart';
+import 'package:bodybuilderaiapp/service/auth_service.dart';
+import 'package:bodybuilderaiapp/service/firebase_firestore_http_service.dart';
 import 'package:bodybuilderaiapp/view/home/main_app_with_navigation.dart';
-import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
@@ -17,7 +17,7 @@ class FitnessDetailsInputScreen extends StatefulWidget {
 }
 
 class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
-  final UserInputService _userInputService = UserInputService();
+  final FirebaseFirestoreHttpService _userInputService = FirebaseFirestoreHttpService();
   final AuthService _authService = AuthService();
 
   String? selectedAgeRange;

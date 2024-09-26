@@ -2,7 +2,7 @@ import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/round_button.dart';
 import 'package:bodybuilderaiapp/common_widget/slider_card.dart';
 import 'package:bodybuilderaiapp/view/user_input/focus_area_input_screen.dart';
-import 'package:bodybuilderaiapp/view/user_input/user_input_model.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
