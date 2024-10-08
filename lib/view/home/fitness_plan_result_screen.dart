@@ -1,3 +1,6 @@
+import 'package:bodybuilderaiapp/common_widget/exercise_list_item.dart';
+import 'package:bodybuilderaiapp/model/exercise.dart';
+import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:bodybuilderaiapp/service/fitness_plan_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
@@ -10,24 +13,20 @@ class FitnessPlanResultScreen extends StatefulWidget {
   final String userId;
   final UserInputModel userInput;
 
-  const FitnessPlanResultScreen(
-      {super.key, required this.userId, required this.userInput});
+  const FitnessPlanResultScreen({super.key, required this.userId, required this.userInput});
 
   @override
-  State<FitnessPlanResultScreen> createState() =>
-      _FitnessPlanResultScreenState();
+  State<FitnessPlanResultScreen> createState() => _FitnessPlanResultScreenState();
 }
 
 class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
   final FitnessPlanService _fitnessPlanService = FitnessPlanService();
-
   Future<FitnessPlanResult>? fitnessPlanFuture;
 
   @override
   void initState() {
     super.initState();
-    fitnessPlanFuture =
-        _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
+    fitnessPlanFuture = _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
   }
 
   @override
@@ -57,7 +56,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
 
   Widget _buildSuccessState(FitnessPlanResult fitnessPlan) {
     return DefaultTabController(
-      length: fitnessPlan.workoutPlan.length,
+      length: fitnessPlan.workoutDays.length,
       child: Column(
         children: [
           TabBar(
@@ -65,14 +64,14 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
             labelColor: TColor.black,
             unselectedLabelColor: Colors.grey,
             indicatorColor: TColor.primaryColor1,
-            tabs: fitnessPlan.workoutPlan.map((dayPlan) {
+            tabs: fitnessPlan.workoutDays.map((dayPlan) {
               return Tab(text: dayPlan.day);
             }).toList(),
           ),
           Expanded(
             child: TabBarView(
-              children: fitnessPlan.workoutPlan.map((dayPlan) {
-                return _buildWorkoutDay(dayPlan);
+              children: fitnessPlan.workoutDays.map((dayPlan) {
+                return _buildWorkoutDay(fitnessPlan.id, dayPlan);
               }).toList(),
             ),
           ),
@@ -81,49 +80,42 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
     );
   }
 
-  Widget _buildWorkoutDay(WorkoutDay dayPlan) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-        itemCount: dayPlan.exercises.length,
-        itemBuilder: (context, index) {
-          final exercise = dayPlan.exercises[index];
-          return _buildExerciseCard(exercise);
-        },
-      ),
-    );
-  }
+  Widget _buildWorkoutDay(String fitnessPlanId, WorkoutDay dayPlan) {
+    return ListView.builder(
+      itemCount: dayPlan.exercises.length,
+      itemBuilder: (context, index) {
+        final exercise = dayPlan.exercises[index];
+        return ExerciseListItem(
+          exercise: exercise,
+          onComplete: () async {
+            print("Completing exercise: ${exercise.id}");
+            await _fitnessPlanService.markExerciseAsCompleted(
+              widget.userId,
+              fitnessPlanId,
+              dayPlan.id,
+              exercise.id,
+            );
+            setState(() {
+              exercise.completed = true;
+            });
+          },
+          onChangeExercise: () async {
+            print("Change exercise: ${exercise.id}");
+            var newExercise = await _fitnessPlanService.changeExercise(
+              widget.userId,
+              fitnessPlanId,
+              dayPlan.id,
+              exercise,
+            );
+            setState(() {
+              var updatedExercises = List<Exercise>.from(dayPlan.exercises);
+              updatedExercises[index] = newExercise;
 
-  Widget _buildExerciseCard(Exercise exercise) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              exercise.name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ),
+              dayPlan = dayPlan.copyWith(exercises: updatedExercises);
+            });
+          },
+        );
+      },
     );
   }
 
@@ -140,8 +132,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                fitnessPlanFuture =
-                    _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
+                fitnessPlanFuture = _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
               });
             },
             child: const Text('Retry'),
@@ -150,4 +141,6 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
       ),
     );
   }
+
+  void _replaceExercise(Exercise exercise) {}
 }

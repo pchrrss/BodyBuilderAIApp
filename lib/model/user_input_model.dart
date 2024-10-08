@@ -20,44 +20,16 @@ class UserInputModel {
   });
 
   static const List fitnessGoalOptions = [
-    {
-      "image": "assets/img/goals/gain_muscle.png",
-      "title": "Gain Muscle",
-      "subTitle": "Strengthen and grow your muscles with focused training."
-    },
-    {
-      "image": "assets/img/goals/lose_weight.png",
-      "title": "Lose Weight",
-      "subTitle": "Achieve a leaner physique with a targeted approach."
-    },
-    {
-      "image": "assets/img/goals/get_shredded.png",
-      "title": "Get Shredded",
-      "subTitle": "Carve out defined muscles with precision workouts."
-    },
-    {
-      "image": "assets/img/goals/maintain_fitness.png",
-      "title": "Maintain Fitness",
-      "subTitle": "Stay in peak condition with balanced routines."
-    },
+    {"image": "assets/img/goals/gain_muscle.png", "title": "Gain Muscle", "subTitle": "Strengthen and grow your muscles with focused training."},
+    {"image": "assets/img/goals/lose_weight.png", "title": "Lose Weight", "subTitle": "Achieve a leaner physique with a targeted approach."},
+    {"image": "assets/img/goals/get_shredded.png", "title": "Get Shredded", "subTitle": "Carve out defined muscles with precision workouts."},
+    {"image": "assets/img/goals/maintain_fitness.png", "title": "Maintain Fitness", "subTitle": "Stay in peak condition with balanced routines."},
   ];
 
   static const List bodyTypeOptions = [
-    {
-      "image": "assets/img/bodytypes/slim.png",
-      "title": "Slim",
-      "subTitle": "A lean and toned figure with a slender build."
-    },
-    {
-      "image": "assets/img/bodytypes/average.png",
-      "title": "Average",
-      "subTitle": "A balanced figure with moderate muscle and body fat."
-    },
-    {
-      "image": "assets/img/bodytypes/heavy.png",
-      "title": "Heavy",
-      "subTitle": "A stockier, broader figure with higher body mass and fat."
-    },
+    {"image": "assets/img/bodytypes/slim.png", "title": "Slim", "subTitle": "A lean and toned figure with a slender build."},
+    {"image": "assets/img/bodytypes/average.png", "title": "Average", "subTitle": "A balanced figure with moderate muscle and body fat."},
+    {"image": "assets/img/bodytypes/heavy.png", "title": "Heavy", "subTitle": "A stockier, broader figure with higher body mass and fat."},
   ];
 
   static const List focusAreaOptions = [
@@ -69,41 +41,30 @@ class UserInputModel {
     {"image": "assets/img/focusareas/fullbody.png", "title": "Full Body"},
   ];
 
-  static const List<String> ageRangeOptions = [
-    '18-29',
-    '30-39',
-    '40-49',
-    '50-59',
-    '60+'
-  ];
+  static const List<String> ageRangeOptions = ['18-29', '30-39', '40-49', '50-59', '60+'];
 
-  static const List<String> bodyFatRangeOptions = [
-    '5-9%',
-    '10-14%',
-    '15-19%',
-    '20-24%',
-    '25-29%',
-    '30-34%',
-    '35-39%',
-    '40+%'
-  ];
+  static const List<String> bodyFatRangeOptions = ['5-9%', '10-14%', '15-19%', '20-24%', '25-29%', '30-34%', '35-39%', '40+%'];
 
-  static const List<String> equipmentOptions = [
-    'No equipment',
-    'Basic equipment',
-    'Full equipment'
-  ];
-  
+  static const List<String> equipmentOptions = ['No equipment', 'Basic equipment', 'Full equipment'];
+
   String generateFitnessPlanRequest() {
     String focusAreaSentence = getFocusAreaSentence();
 
     return '''
-      I am a ${ageRange ?? 'unspecified'} years old person with a ${bodyType ?? 'unspecified'} body type.
-      My goal is to ${fitnessGoal ?? 'improve my overall fitness'}, and I want to focus on my $focusAreaSentence.
-      Currently, my body fat percentage is around ${bodyFatRange ?? 'unspecified'}, and my fitness level is ${fitnessLevel ?? 'average'}/10.
-      I have access to ${equipment ?? 'no equipment'}, and I plan to work out ${workoutDays ?? '3'} days a week.
-      Can you generate a fitness plan for me based on these details?
-    ''';
+      I am a ${ageRange ?? 'unspecified'} years old person with a ${bodyType ?? 'unspecified'} body type. My goal is to ${fitnessGoal ?? 'improve my overall fitness'}, and I want to focus on my $focusAreaSentence. Currently, my body fat percentage is around ${bodyFatRange ?? 'unspecified'}, and my fitness level is ${fitnessLevel ?? 'average'}/10. I have access to ${equipment ?? 'no equipment'}, and I plan to work out ${workoutDays ?? '3'} days a week.
+      Can you generate a fitness plan for me in JSON format based on these details, including the following structure:
+        * workout_days: an array of 7 elements, with {timesPerWeek} days of training and {restdays} rest days, with:
+            * day: a string representing week's day of the training.
+            * focus_area: the main focus area for the training, if it's a rest day, the focus area will 'Rest day'.
+            * exercises: an array of exercises for the day, With:
+                * name: the name of the exercise.
+                * instruction: give some instructions to how apply correctly the exercise.
+                * sets: the number of sets for the exercise.
+                * reps: a string representation of repetitions per set or times of execution.
+      
+
+      Please respond only in valid JSON format, without any additional characters or text. Do not include explanations, comments, or extra characters.
+      ''';
   }
 
   String getFocusAreaSentence() {
