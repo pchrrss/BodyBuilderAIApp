@@ -70,6 +70,7 @@ class FirebaseFirestoreHttpService {
           'name': exercise['name'],
           'sets': exercise['sets'],
           'reps': exercise['reps'],
+          'instruction': exercise['instruction'],
         });
       }
     }
@@ -91,7 +92,7 @@ class FirebaseFirestoreHttpService {
       }
 
       final fitnessPlanDoc = fitnessPlanQuery.docs.first;
-      final workoutDaysQuery = await fitnessPlanDoc.reference.collection('workoutDays').get();
+      final workoutDaysQuery = await fitnessPlanDoc.reference.collection('workoutDays').orderBy('day').get();
       final workoutDays = await Future.wait(workoutDaysQuery.docs.map((dayDoc) async {
         final exercisesQuery = await dayDoc.reference.collection('exercises').get();
 

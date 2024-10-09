@@ -33,7 +33,16 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: const TransparentAppBarWithBorder(title: 'Fitness Plan'),
+      appBar: TransparentAppBarWithBorder(title: 'Fitness Plan', actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () {
+            setState(() {
+              fitnessPlanFuture = _fitnessPlanService.regenerateFitnessPlan(widget.userId, widget.userInput);
+            });
+          },
+        ),
+      ]),
       body: FutureBuilder<FitnessPlanResult>(
         future: fitnessPlanFuture,
         builder: (context, snapshot) {
@@ -69,10 +78,13 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
             }).toList(),
           ),
           Expanded(
-            child: TabBarView(
-              children: fitnessPlan.workoutDays.map((dayPlan) {
-                return _buildWorkoutDay(fitnessPlan.id, dayPlan);
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TabBarView(
+                children: fitnessPlan.workoutDays.map((dayPlan) {
+                  return _buildWorkoutDay(fitnessPlan.id, dayPlan);
+                }).toList(),
+              ),
             ),
           ),
         ],
@@ -88,7 +100,6 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
         return ExerciseListItem(
           exercise: exercise,
           onComplete: () async {
-            print("Completing exercise: ${exercise.id}");
             await _fitnessPlanService.markExerciseAsCompleted(
               widget.userId,
               fitnessPlanId,
@@ -100,7 +111,6 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
             });
           },
           onChangeExercise: () async {
-            print("Change exercise: ${exercise.id}");
             var newExercise = await _fitnessPlanService.changeExercise(
               widget.userId,
               fitnessPlanId,
@@ -108,10 +118,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
               exercise,
             );
             setState(() {
-              var updatedExercises = List<Exercise>.from(dayPlan.exercises);
-              updatedExercises[index] = newExercise;
-
-              dayPlan = dayPlan.copyWith(exercises: updatedExercises);
+              dayPlan.exercises[index] = newExercise;
             });
           },
         );

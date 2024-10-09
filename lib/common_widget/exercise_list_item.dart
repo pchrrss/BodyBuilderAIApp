@@ -4,7 +4,7 @@ import 'package:bodybuilderaiapp/model/exercise.dart';
 class ExerciseListItem extends StatefulWidget {
   final Exercise exercise;
   final VoidCallback onComplete;
-  final VoidCallback onChangeExercise;
+  final Future<void> Function() onChangeExercise;
 
   const ExerciseListItem({
     super.key,
@@ -18,71 +18,107 @@ class ExerciseListItem extends StatefulWidget {
 }
 
 class _ExerciseListItemState extends State<ExerciseListItem> {
+  bool isReplacing = false;
+  bool showInstruction = false;
+
   @override
   Widget build(BuildContext context) {
-    bool isCompleted = widget.exercise.completed;
-    print('isCompleted: $isCompleted');
+    final textStyle = widget.exercise.completed
+        ? const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+            decoration: TextDecoration.lineThrough,
+          )
+        : const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          );
 
-    return Dismissible(
-      key: Key(widget.exercise.name),
-      background: isCompleted ? null : _buildActionButtons(),
-      confirmDismiss: isCompleted
-          ? null
-          : (direction) async {
-              if (direction == DismissDirection.endToStart) {
-                widget.onComplete();
-              } else if (direction == DismissDirection.startToEnd) {
-                widget.onChangeExercise();
-              }
-              return false;
-            }, 
-      child: Container(
-        color: isCompleted ? Colors.grey[300] : Colors.white, 
-        child: ListTile(
-          title: Text(
-            widget.exercise.name,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              decoration: isCompleted ? TextDecoration.lineThrough : null,
-              color: isCompleted ? Colors.grey : Colors.black87,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 3,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      color: widget.exercise.completed ? Colors.grey[300] : Colors.grey[100],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: Icon(
+                Icons.fitness_center,
+                color: widget.exercise.completed ? Colors.grey : Colors.blue,
+              ),
+              title: Text(widget.exercise.name, style: textStyle),
+              subtitle: Text(
+                'Sets: ${widget.exercise.sets}, Reps: ${widget.exercise.reps}',
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.check_circle,
+                      color: widget.exercise.completed ? Colors.green : Colors.grey,
+                    ),
+                    onPressed: widget.exercise.completed ? null : widget.onComplete,
+                  ),
+                  isReplacing
+                      ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.blue,
+                          ),
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.swap_horiz, color: widget.exercise.completed ? Colors.grey : Colors.blue),
+                          onPressed: widget.exercise.completed
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    isReplacing = true;
+                                  });
+                                  await widget.onChangeExercise();
+                                  setState(() {
+                                    isReplacing = false;
+                                  });
+                                },
+                        ),
+                ],
+              ),
             ),
-          ),
-          subtitle: Text(
-            'Sets: ${widget.exercise.sets}, Reps: ${widget.exercise.reps}',
-            style: TextStyle(
-              fontSize: 16,
-              color: isCompleted ? Colors.grey : Colors.black54,
+            if (showInstruction && widget.exercise.instruction != null && widget.exercise.instruction!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
+                  widget.exercise.instruction!,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+              ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(
+                  showInstruction ? Icons.expand_less : Icons.expand_more,
+                  color: Colors.black54,
+                ),
+                onPressed: () {
+                  setState(() {
+                    showInstruction = !showInstruction;
+                  });
+                },
+              ),
             ),
-          ),
-          trailing: isCompleted
-              ? const Icon(Icons.check, color: Colors.green)
-              : const Icon(Icons.arrow_forward_ios, color: Colors.black54),
+          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            color: Colors.green,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 16.0),
-            child: const Icon(Icons.check_circle, color: Colors.white),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.blue,
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 16.0),
-            child: const Icon(Icons.swap_horiz, color: Colors.white),
-          ),
-        ),
-      ],
     );
   }
 }

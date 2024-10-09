@@ -4,6 +4,7 @@ class Exercise {
   int sets;
   String reps;
   bool completed;
+  String? instruction;
   DateTime? completedAt;
 
   Exercise({
@@ -12,6 +13,7 @@ class Exercise {
     required this.sets,
     required this.reps,
     this.completed = false,
+    this.instruction,
     this.completedAt,
   });
 
@@ -22,7 +24,8 @@ class Exercise {
       sets: data['sets'],
       reps: data['reps'].toString(),
       completed: data['completed'] ?? false,
-      completedAt: data['completedAt'] != null ? DateTime.parse(data['completedAt']) : null,
+      instruction: data['instruction'],
+      completedAt: data['completedAt']?.toDate(),
     );
   }
 
@@ -33,6 +36,7 @@ class Exercise {
       'sets': sets,
       'reps': reps,
       'completed': completed,
+      'instruction': instruction,
       'completedAt': completedAt,
     };
   }
@@ -43,6 +47,7 @@ class Exercise {
     int? sets,
     String? reps,
     bool? completed,
+    String? instruction,
   }) {
     return Exercise(
       id: id ?? this.id,
@@ -50,6 +55,7 @@ class Exercise {
       sets: sets ?? this.sets,
       reps: reps ?? this.reps,
       completed: completed ?? this.completed,
+      instruction: instruction ?? this.instruction,
     );
   }
 }

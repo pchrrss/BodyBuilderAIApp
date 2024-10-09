@@ -1,12 +1,10 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:flutter/material.dart';
 
-class TransparentAppBarWithBorder extends StatelessWidget
-    implements PreferredSizeWidget {
+class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
-  const TransparentAppBarWithBorder(
-      {super.key, required this.title, this.actions});
+  const TransparentAppBarWithBorder({super.key, required this.title, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,6 @@ class TransparentAppBarWithBorder extends StatelessWidget
               'assets/img/logo.png',
               height: 50,
             ),
-
           ],
         ),
         actions: actions,
