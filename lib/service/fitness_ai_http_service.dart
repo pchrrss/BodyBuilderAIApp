@@ -1,5 +1,4 @@
 import 'package:bodybuilderaiapp/model/exercise.dart';
-import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -86,32 +85,51 @@ class FitnessAiHttpService {
     };
   }
 
-  Future<Map<String, dynamic>> suggestReplacementExercise(String focusArea, Exercise exercise) async {
+  Future<Map<String, dynamic>> suggestReplacementExercise(String focusArea, Exercise exerciseToReplace) async {
     var url = Uri.parse(apiUrl);
-    return await _mockExercise();
-    // var response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: jsonEncode({
-    //     "model": "llama3",
-    //     "prompt": "replace exercise $exercise.name for $focusArea",
-    //     //fixme ?
-    //     "stream": false,
-    //   }),
-    // );
+    var exerciceReplacementRequest = generateExerciseReplacementRequest(focusArea, exerciseToReplace);
+    print(exerciceReplacementRequest);
 
-    // if (response.statusCode == 200) {
-    //   var data = jsonDecode(response.body);
-    //   return data['response'];
-    // } else {
-    //   throw Exception('Failed to fetch replacement exercise');
-    // }
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "model": "llama3",
+        "prompt": exerciceReplacementRequest,
+        //fixme ?
+        "stream": false,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(jsonDecode(data['response']));
+      return jsonDecode(data['response']);
+    } else {
+      throw Exception('Failed to fetch replacement exercise');
+    }
   }
 
-  Future<Map<String, dynamic>> _mockExercise() async {
-    await Future.delayed(Duration(seconds: 3));
-    return {"name": "Burpees (Bodyweight)", "sets": 3, "reps": 12};
+  String generateExerciseReplacementRequest(String focusArea, Exercise exerciseToReplace) {
+
+    return '''
+Your output should be structured as a valid JSON object with detailed values for each field. Key names and values should have no backslashes, and values should use plain ASCII with no special characters.
+I am a person focusing on $focusArea.
+
+Can you provide me a different exercise to replace '${exerciseToReplace.name}'?
+Generate the response in JSON format using the following structure:
+
+{
+  "name": "Name of the exercise",
+  "instruction": "How to perform the exercise correctly",
+  "sets": "A number of sets appropriate for the exercise",
+  "reps": "A string representing the number of reps or a time duration, whichever fits the exercise best"
+}
+
+Please respond only in valid JSON format with no additional text.
+
+  ''';
   }
 }

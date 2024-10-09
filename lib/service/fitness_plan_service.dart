@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/model/exercise.dart';
+import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:bodybuilderaiapp/service/fitness_ai_http_service.dart';
 import 'package:bodybuilderaiapp/service/firebase_firestore_http_service.dart';
 import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
@@ -34,9 +35,9 @@ class FitnessPlanService {
     return latestPlan;
   }
 
-  Future<Exercise> changeExercise(String userId, String planId, String workoutDayId, Exercise exercise) async {
-    var newExercise = await _httpService.suggestReplacementExercise("focusArea", exercise);
-    return await _firestoreService.replaceExerciseInFirestore(userId, planId, workoutDayId, exercise.id, newExercise);
+  Future<Exercise> changeExercise(String userId, String planId, WorkoutDay workoutDay, Exercise exerciseToReplace) async {
+    var newExercise = await _httpService.suggestReplacementExercise(workoutDay.focusArea, exerciseToReplace);
+    return await _firestoreService.replaceExerciseInFirestore(userId, planId, workoutDay.id, exerciseToReplace.id, newExercise);
   }
 
   Future<void> markExerciseAsCompleted(String userId, String planId, String workoutDayId, String exerciseId) async {

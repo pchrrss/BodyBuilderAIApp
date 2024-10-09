@@ -114,7 +114,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
             var newExercise = await _fitnessPlanService.changeExercise(
               widget.userId,
               fitnessPlanId,
-              dayPlan.id,
+              dayPlan,
               exercise,
             );
             setState(() {
