@@ -94,14 +94,19 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
                 ],
               ),
             ),
-            if (showInstruction && widget.exercise.instruction != null && widget.exercise.instruction!.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  widget.exercise.instruction!,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-              ),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              child: showInstruction && widget.exercise.instruction != null && widget.exercise.instruction!.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        widget.exercise.instruction!,
+                        style: const TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(

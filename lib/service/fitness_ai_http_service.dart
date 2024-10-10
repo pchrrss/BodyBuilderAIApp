@@ -2,11 +2,14 @@ import 'package:bodybuilderaiapp/model/exercise.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:logger/web.dart';
+
 class FitnessAiHttpService {
+  var logger = Logger();
   final String apiUrl = 'http://localhost:11434/api/generate';
 
   Future<Map<String, dynamic>> generateFitnessPlan(String fitnessPlanRequest) async {
-    print(fitnessPlanRequest);
+    logger.i(fitnessPlanRequest);
     var url = Uri.parse(apiUrl);
 
     var response = await http.post(
@@ -24,7 +27,7 @@ class FitnessAiHttpService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(jsonDecode(data['response']));
+      logger.i(jsonDecode(data['response']));
       return jsonDecode(data['response']);
     } else {
       throw Exception('Failed to generate fitness plan');
@@ -88,7 +91,7 @@ class FitnessAiHttpService {
   Future<Map<String, dynamic>> suggestReplacementExercise(String focusArea, Exercise exerciseToReplace) async {
     var url = Uri.parse(apiUrl);
     var exerciceReplacementRequest = generateExerciseReplacementRequest(focusArea, exerciseToReplace);
-    print(exerciceReplacementRequest);
+    logger.i(exerciceReplacementRequest);
 
     var response = await http.post(
       url,
@@ -105,7 +108,7 @@ class FitnessAiHttpService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(jsonDecode(data['response']));
+      logger.i(jsonDecode(data['response']));
       return jsonDecode(data['response']);
     } else {
       throw Exception('Failed to fetch replacement exercise');
@@ -113,12 +116,13 @@ class FitnessAiHttpService {
   }
 
   String generateExerciseReplacementRequest(String focusArea, Exercise exerciseToReplace) {
+    String alreadyPresentExercisesJoined = exerciseToReplace.alreadySuggestedExercises?.join(', ') ?? '';
 
     return '''
 Your output should be structured as a valid JSON object with detailed values for each field. Key names and values should have no backslashes, and values should use plain ASCII with no special characters.
 I am a person focusing on $focusArea.
 
-Can you provide me a different exercise to replace '${exerciseToReplace.name}'?
+Can you provide me a different exercise to replace '${exerciseToReplace.name}', different from these exercises '$alreadyPresentExercisesJoined'
 Generate the response in JSON format using the following structure:
 
 {

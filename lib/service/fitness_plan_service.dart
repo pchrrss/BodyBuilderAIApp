@@ -37,6 +37,8 @@ class FitnessPlanService {
 
   Future<Exercise> changeExercise(String userId, String planId, WorkoutDay workoutDay, Exercise exerciseToReplace) async {
     var newExercise = await _httpService.suggestReplacementExercise(workoutDay.focusArea, exerciseToReplace);
+    exerciseToReplace.alreadySuggestedExercises.add(exerciseToReplace.name);
+    newExercise["alreadySuggestedExercises"] = exerciseToReplace.alreadySuggestedExercises;
     return await _firestoreService.replaceExerciseInFirestore(userId, planId, workoutDay.id, exerciseToReplace.id, newExercise);
   }
 

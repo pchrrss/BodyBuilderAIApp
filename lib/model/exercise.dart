@@ -6,6 +6,7 @@ class Exercise {
   bool completed;
   String? instruction;
   DateTime? completedAt;
+  Set<String> alreadySuggestedExercises;
 
   Exercise({
     required this.id,
@@ -15,6 +16,7 @@ class Exercise {
     this.completed = false,
     this.instruction,
     this.completedAt,
+    this.alreadySuggestedExercises = const <String>{},
   });
 
   factory Exercise.from(String id, Map<String, dynamic> data) {
@@ -26,6 +28,7 @@ class Exercise {
       completed: data['completed'] ?? false,
       instruction: data['instruction'],
       completedAt: data['completedAt']?.toDate(),
+      alreadySuggestedExercises: data['alreadySuggestedExercises'] ?? <String>{},
     );
   }
 
@@ -38,6 +41,7 @@ class Exercise {
       'completed': completed,
       'instruction': instruction,
       'completedAt': completedAt,
+      'alreadySuggestedExercises': alreadySuggestedExercises?.toList(),
     };
   }
 
