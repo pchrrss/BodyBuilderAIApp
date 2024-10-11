@@ -28,7 +28,7 @@ class Exercise {
       completed: data['completed'] ?? false,
       instruction: data['instruction'],
       completedAt: data['completedAt']?.toDate(),
-      alreadySuggestedExercises: data['alreadySuggestedExercises'] ?? <String>{},
+      alreadySuggestedExercises: (data['alreadySuggestedExercises'] as List<dynamic>?)?.map((e) => e.toString()).toSet() ?? <String>{},
     );
   }
 
@@ -41,7 +41,7 @@ class Exercise {
       'completed': completed,
       'instruction': instruction,
       'completedAt': completedAt,
-      'alreadySuggestedExercises': alreadySuggestedExercises?.toList(),
+      'alreadySuggestedExercises': alreadySuggestedExercises.toList(),
     };
   }
 

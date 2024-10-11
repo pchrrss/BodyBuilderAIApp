@@ -79,6 +79,7 @@ class _FitnessGoalInputScreenState extends State<FitnessGoalInputScreen> {
                   const Spacer(),
                   RoundButton(
                     title: "Confirm",
+                    type: RoundButtonType.textGradient,
                     onPressed: () {
                       String selectedGoal = UserInputModel.fitnessGoalOptions[selectedGoalIndex]["title"]!;
                       

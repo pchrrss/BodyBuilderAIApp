@@ -1,10 +1,13 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
+import 'package:bodybuilderaiapp/view/home/profile_view.dart';
 import 'package:flutter/material.dart';
 
 class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSizeWidget {
+  final UserInputModel userInput;
   final String title;
   final List<Widget>? actions;
-  const TransparentAppBarWithBorder({super.key, required this.title, this.actions});
+  const TransparentAppBarWithBorder({super.key, required this.title, this.actions, required this.userInput});
 
   @override
   Widget build(BuildContext context) {
@@ -13,31 +16,47 @@ class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSi
         color: Colors.transparent,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 2,
+            color: TColor.lightGrey,
+            width: 1,
           ),
         ),
       ),
       child: AppBar(
-        excludeHeaderSemantics: true,
+        backgroundColor: TColor.white,
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: Row(
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: TColor.secondaryColor2,
-              ),
-            ),
-            const Spacer(),
             Image.asset(
               'assets/img/logo.png',
               height: 50,
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: TColor.black,
+                ),
+              ),
+            ),
           ],
         ),
-        actions: actions,
+        actions: [
+          if (actions != null) ...actions!,
+          IconButton(
+            icon: const Icon(Icons.manage_accounts),
+            onPressed: () {
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileView(userInput: userInput),
+                    ),
+                  );
+            },
+          ),
+        ],
       ),
     );
   }

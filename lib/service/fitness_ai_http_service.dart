@@ -116,7 +116,7 @@ class FitnessAiHttpService {
   }
 
   String generateExerciseReplacementRequest(String focusArea, Exercise exerciseToReplace) {
-    String alreadyPresentExercisesJoined = exerciseToReplace.alreadySuggestedExercises?.join(', ') ?? '';
+    String alreadyPresentExercisesJoined = exerciseToReplace.alreadySuggestedExercises.join(', ');
 
     return '''
 Your output should be structured as a valid JSON object with detailed values for each field. Key names and values should have no backslashes, and values should use plain ASCII with no special characters.

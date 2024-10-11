@@ -9,8 +9,8 @@ class TColor {
   
 
 
-  static Color get primaryColor1 => const Color(0xFF4E6069);
-  static Color get primaryColor2 => const Color(0xFF14202E);
+  static Color get primaryColor1 => const Color(0xFF000000);
+  static Color get primaryColor2 => const Color(0xFF000000);
 
   static Color get secondaryColor1 => const Color(0xFFE8673E);
   static Color get secondaryColor2 => const Color(0xFF632526);

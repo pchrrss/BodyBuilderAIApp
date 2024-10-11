@@ -165,6 +165,7 @@ class _FitnessDetailsInputScreenState extends State<FitnessDetailsInputScreen> {
               const Spacer(),
               RoundButton(
                 title: "Confirm",
+                type: RoundButtonType.textGradient,
                 onPressed: () async {
                   widget.userInput.ageRange = selectedAgeRange;
                   widget.userInput.bodyFatRange = selectedBodyFatRange;

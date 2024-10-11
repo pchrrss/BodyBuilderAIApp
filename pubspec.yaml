@@ -89,6 +89,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: AfacadFlux
+      fonts:
+        - asset: assets/fonts/AfacadFlux-Regular.ttf
+        - asset: assets/fonts/AfacadFlux-Bold.ttf
+          weight: 700
     - family: NotoSans
       fonts:
         - asset: assets/fonts/NotoSans-Regular.ttf

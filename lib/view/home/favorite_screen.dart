@@ -31,7 +31,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: const TransparentAppBarWithBorder(title: 'Favorite'),
+      appBar: TransparentAppBarWithBorder(title: 'Favorite', userInput: widget.userInput),
       body: FutureBuilder<Map<String, dynamic>>(
         future: fetchFitnessPlan(),
         builder: (context, snapshot) {

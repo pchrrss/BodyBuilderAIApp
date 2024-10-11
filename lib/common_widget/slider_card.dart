@@ -30,7 +30,7 @@ class SliderCard extends StatelessWidget {
           gradient: LinearGradient(
             colors: isSelected
                 ? [TColor.secondaryColor1, TColor.primaryColor1]
-                : TColor.primaryGradient,
+                : [TColor.white, TColor.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

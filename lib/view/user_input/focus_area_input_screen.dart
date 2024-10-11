@@ -74,7 +74,7 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
                           gradient: LinearGradient(
                             colors: isSelected
                                 ? [TColor.secondaryColor1, TColor.primaryColor1]
-                                : TColor.primaryGradient,
+                                : [Colors.black54, Colors.black54],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -116,6 +116,7 @@ class _FocusAreaInputScreenState extends State<FocusAreaInputScreen> {
               Center(
                 child: RoundButton(
                   title: "Confirm",
+                  type: RoundButtonType.textGradient,
                   onPressed: () {
                     widget.userInput.focusAreas = selectedFocusAreas
                         .map((index) => UserInputModel.focusAreaOptions[index]["title"].toString())

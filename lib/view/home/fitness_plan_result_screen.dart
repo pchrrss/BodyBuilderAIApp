@@ -33,7 +33,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: TransparentAppBarWithBorder(title: 'Fitness Plan', actions: [
+      appBar: TransparentAppBarWithBorder(title: 'Fitness Plan', userInput: widget.userInput, actions: [
         IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: () {

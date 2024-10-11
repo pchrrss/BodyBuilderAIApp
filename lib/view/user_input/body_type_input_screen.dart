@@ -79,6 +79,7 @@ class _BodyTypeInputScreenState extends State<BodyTypeInputScreen> {
                   const Spacer(),
                   RoundButton(
                     title: "Confirm",
+                    type: RoundButtonType.textGradient,
                     onPressed: () {
                       widget.userInput.bodyType = UserInputModel.bodyTypeOptions[selectedBodyTypeIndex]["title"]!;
 

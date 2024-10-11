@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             )
           ),
           useMaterial3: true,
-          fontFamily: "NotoSans",
+          fontFamily: "AfacadFlux",
         ),
         home: const AuthGuard());
   }
