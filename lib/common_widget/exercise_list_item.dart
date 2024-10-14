@@ -4,6 +4,7 @@ import 'package:logger/web.dart';
 
 class ExerciseListItem extends StatefulWidget {
   final Exercise exercise;
+  final bool isLiked;
   final VoidCallback onComplete;
   final Future<void> Function() onChangeExercise;
   final Future<void> Function() onLikeExercise;
@@ -16,6 +17,7 @@ class ExerciseListItem extends StatefulWidget {
     required this.onChangeExercise,
     required this.onLikeExercise,
     required this.onUnlikeExercise,
+    required this.isLiked,
   });
 
   @override
@@ -27,7 +29,6 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
   bool isReplacing = false;
   bool showInstruction = false;
   bool isImageToggled = false;
-  bool isLiked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,6 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.grey,
-            decoration: TextDecoration.lineThrough,
           )
         : const TextStyle(
             fontSize: 18,
@@ -86,13 +86,13 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
         borderRadius: BorderRadius.circular(8.0),
         child: Image.asset(
           assetPath,
-          height: 80,
-          width: 80,
+          height: 100,
+          width: 100,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               color: Colors.grey[300],
               child: const Icon(
                 Icons.image_not_supported,
@@ -132,17 +132,17 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
           height: 34,
           child: IconButton(
             icon: Icon(
-              isLiked ? Icons.favorite : Icons.favorite_border,
-              color: isLiked ? Colors.red : Colors.grey,
+              widget.isLiked ? Icons.favorite : Icons.favorite_border,
+              color: widget.isLiked ? Colors.red : Colors.grey,
             ),
             onPressed: () async {
-              if (isLiked) {
+              if (widget.isLiked) {
                 widget.onUnlikeExercise();
               } else {
                 widget.onLikeExercise();
               }
               setState(() {
-                isLiked = !isLiked;
+                // widget.isLiked = !widget.isLiked;
               });
             },
           ),

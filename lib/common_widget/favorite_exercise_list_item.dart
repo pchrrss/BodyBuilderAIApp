@@ -75,13 +75,13 @@ class _FavoriteExerciseListItemState extends State<FavoriteExerciseListItem> {
         borderRadius: BorderRadius.circular(8.0),
         child: Image.asset(
           assetPath,
-          height: 80,
-          width: 80,
+          height: 100,
+          width: 100,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               color: Colors.grey[300],
               child: const Icon(
                 Icons.image_not_supported,

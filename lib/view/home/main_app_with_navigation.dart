@@ -1,5 +1,6 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
+import 'package:bodybuilderaiapp/view/home/activity_screen.dart';
 import 'package:bodybuilderaiapp/view/home/favorite_screen.dart';
 import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
 import 'package:bodybuilderaiapp/model/user_input_model.dart';
@@ -17,7 +18,7 @@ class MainAppWithNavigation extends StatefulWidget {
 }
 
 class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   late List<Widget> _pages;
 
@@ -35,13 +36,6 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // fixme - how manage app bar ? on differnte screen or in main app ?
-      // appBar: AppBar(
-      //   title: Text(_getAppBarTitle(_currentIndex),
-      //       style: TextStyle(color: TColor.white, fontWeight: FontWeight.bold)),
-      //   backgroundColor: TColor.primaryColor1,
-      //   automaticallyImplyLeading: false,
-      // ),
       body: _pages[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -90,21 +84,6 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
       ),
     );
   }
-
-  String _getAppBarTitle(int index) {
-    switch (index) {
-      case 0:
-        return "Home";
-      case 1:
-        return "Plan";
-      case 2:
-        return "Activity";
-      case 3:
-        return "Favorite";
-      default:
-        return "Plan";
-    }
-  }
 }
 
 class HomeScreen extends StatelessWidget {
@@ -118,24 +97,6 @@ class HomeScreen extends StatelessWidget {
       body: const Center(
         child: Text(
           'Home Screen',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class ActivityScreen extends StatelessWidget {
-  final UserInputModel userInput;
-  const ActivityScreen({super.key, required this.userInput});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentAppBarWithBorder(title: 'Activity', userInput: userInput),
-      body: const Center(
-        child: Text(
-          'Activity Screen',
           style: TextStyle(fontSize: 24),
         ),
       ),

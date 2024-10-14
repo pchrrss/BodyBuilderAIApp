@@ -25,6 +25,22 @@ class FitnessPlanResult {
     required this.workoutDays,
   });
 
+  int findFirstUncompletedDay() {
+    for (int i = 0; i < workoutDays.length; i++) {
+      WorkoutDay day = workoutDays[i];
+      if (day.exercises.any((exercise) => !exercise.completed)) {
+        return i;
+      }
+    }
+    return workoutDays.length - 1;
+  }
+
+  bool areAllExercisesCompleted() {
+    return workoutDays.every((day) {
+      return day.exercises.every((exercise) => exercise.completed);
+    });
+  }
+
   factory FitnessPlanResult.from(String id, Map<String, dynamic> data, List<WorkoutDay> workoutDays) {
     return FitnessPlanResult(
       id: id,

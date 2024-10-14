@@ -1,15 +1,15 @@
 import 'package:bodybuilderaiapp/common_widget/exercise_list_item.dart';
+import 'package:bodybuilderaiapp/common_widget/typing_effect_loading_screen.dart';
 import 'package:bodybuilderaiapp/common_widget/workout_day_progress.dart';
-import 'package:bodybuilderaiapp/model/exercise.dart';
 import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:bodybuilderaiapp/service/firebase_firestore_http_service.dart';
 import 'package:bodybuilderaiapp/service/fitness_plan_service.dart';
 import 'package:flutter/material.dart';
-import 'package:bodybuilderaiapp/common_widget/fitness_loading_indicator.dart';
 import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
 import 'package:bodybuilderaiapp/common/color_extension.dart';
 import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
+import 'package:logger/web.dart';
 
 class FitnessPlanResultScreen extends StatefulWidget {
   final String userId;
@@ -22,15 +22,33 @@ class FitnessPlanResultScreen extends StatefulWidget {
 }
 
 class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
+  Logger log = Logger();
   final FitnessPlanService _fitnessPlanService = FitnessPlanService();
   final FirebaseFirestoreHttpService _firestoreService = FirebaseFirestoreHttpService();
   Future<FitnessPlanResult>? fitnessPlanFuture;
+  List<String> favoriteExerciseNames = [];
   int currentDayIndex = 0;
+  bool allExercisesCompleted = false;
 
   @override
   void initState() {
     super.initState();
+    _loadFavorites();
     fitnessPlanFuture = _fitnessPlanService.fetchOrGenerateFitnessPlan(widget.userId, widget.userInput);
+    fitnessPlanFuture!.then((fitnessPlan) {
+      setState(() {
+        currentDayIndex = fitnessPlan.findFirstUncompletedDay();
+        allExercisesCompleted = fitnessPlan.areAllExercisesCompleted();
+      });
+    });
+  }
+
+  Future<void> _loadFavorites() async {
+    var favoriteExercises = await _firestoreService.getLikedExercises(widget.userId);
+    setState(() {
+      favoriteExerciseNames = favoriteExercises.map((fav) => fav.name).toList();
+      log.i('Favorite exercises: $favoriteExerciseNames');
+    });
   }
 
   void _goToNextDay(FitnessPlanResult fitnessPlan) {
@@ -41,6 +59,14 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
     }
   }
 
+  Future<void> _regeneratePlan() async {
+    setState(() {
+      currentDayIndex = 0;
+      allExercisesCompleted = false;
+      fitnessPlanFuture = _fitnessPlanService.regenerateFitnessPlan(widget.userId, widget.userInput);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,76 +74,19 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
       appBar: TransparentAppBarWithBorder(title: 'Fitness Plan', userInput: widget.userInput, actions: [
         IconButton(
           icon: const Icon(Icons.refresh),
-          onPressed: () {
-            setState(() {
-              fitnessPlanFuture = _fitnessPlanService.regenerateFitnessPlan(widget.userId, widget.userInput);
-            });
-          },
+          onPressed: () => _regeneratePlan(),
         ),
       ]),
       body: FutureBuilder<FitnessPlanResult>(
         future: fitnessPlanFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const FitnessLoadingIndicator();
+            return TypingEffectLoadingScreen();
           } else if (snapshot.hasError) {
             return _buildErrorState();
           } else if (snapshot.hasData) {
             FitnessPlanResult fitnessPlan = snapshot.data!;
-            WorkoutDay dayPlan = fitnessPlan.workoutDays[currentDayIndex];
-            return Column(
-              children: [
-                WorkoutDayProgress(workoutDay: dayPlan),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: dayPlan.exercises.length,
-                    itemBuilder: (context, index) {
-                      final exercise = dayPlan.exercises[index];
-                      return ExerciseListItem(
-                        exercise: exercise,
-                        onComplete: () async {
-                          await _fitnessPlanService.markExerciseAsCompleted(
-                            widget.userId,
-                            fitnessPlan.id,
-                            dayPlan.id,
-                            exercise.id,
-                          );
-                          setState(() {
-                            exercise.completed = true;
-                          });
-                        },
-                        onChangeExercise: () async {
-                          var newExercise = await _fitnessPlanService.changeExercise(
-                            widget.userId,
-                            fitnessPlan.id,
-                            dayPlan,
-                            exercise,
-                          );
-                          setState(() {
-                            dayPlan.exercises[index] = newExercise;
-                          });
-                        },
-                        onLikeExercise: () async {
-                          await _firestoreService.likeExercise(widget.userId, exercise);
-                        },
-                        onUnlikeExercise: () async {
-                          await _firestoreService.unlikeExercise(widget.userId, exercise);
-                        },
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed:
-                        currentDayIndex < fitnessPlan.workoutDays.length - 1 ? () => _goToNextDay(fitnessPlan) : null, // Disable if on the last day
-                    child: Text('Next Day'),
-                  ),
-                ),
-              ],
-            );
-            // return _buildSuccessState(fitnessPlan);
+            return _buildSuccessState(fitnessPlan);
           } else {
             return const Center(
               child: Text('No fitness plan available'),
@@ -129,76 +98,79 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
   }
 
   Widget _buildSuccessState(FitnessPlanResult fitnessPlan) {
-    return DefaultTabController(
-      length: fitnessPlan.workoutDays.length,
-      child: Column(
-        children: [
-          TabBar(
-            isScrollable: true,
-            labelColor: TColor.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: TColor.primaryColor1,
-            tabs: fitnessPlan.workoutDays.map((dayPlan) {
-              return Tab(text: dayPlan.day);
-            }).toList(),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TabBarView(
-                children: fitnessPlan.workoutDays.map((dayPlan) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [WorkoutDayProgress(workoutDay: dayPlan), _buildWorkoutDay(fitnessPlan.id, dayPlan)],
-                    ),
+    WorkoutDay dayPlan = fitnessPlan.workoutDays[currentDayIndex];
+    return Column(
+      children: [
+        WorkoutDayProgress(workoutDay: dayPlan),
+        Expanded(
+          child: ListView.builder(
+            itemCount: dayPlan.exercises.length,
+            itemBuilder: (context, index) {
+              final exercise = dayPlan.exercises[index];
+              return ExerciseListItem(
+                exercise: exercise,
+                isLiked: favoriteExerciseNames.contains(exercise.name),
+                onComplete: () async {
+                  await _fitnessPlanService.markExerciseAsCompleted(
+                    widget.userId,
+                    fitnessPlan.id,
+                    dayPlan.id,
+                    exercise.id,
                   );
-                  // return _buildWorkoutDay(fitnessPlan.id, dayPlan);
-                }).toList(),
-              ),
-            ),
+                  setState(() {
+                    exercise.completed = true;
+                    allExercisesCompleted = fitnessPlan.areAllExercisesCompleted();
+                    if (allExercisesCompleted) {
+                      currentDayIndex = fitnessPlan.findFirstUncompletedDay();
+                    }
+                  });
+                },
+                onChangeExercise: () async {
+                  var newExercise = await _fitnessPlanService.changeExercise(
+                    widget.userId,
+                    fitnessPlan.id,
+                    dayPlan,
+                    exercise,
+                  );
+                  setState(() {
+                    dayPlan.exercises[index] = newExercise;
+                  });
+                },
+                onLikeExercise: () async {
+                  await _firestoreService.likeExercise(widget.userId, exercise);
+                  setState(() {
+                    favoriteExerciseNames.add(exercise.name);
+                  });
+                },
+                onUnlikeExercise: () async {
+                  await _firestoreService.unlikeExercise(widget.userId, exercise);
+                  setState(() {
+                    favoriteExerciseNames.remove(exercise.name);
+                  });
+                },
+              );
+            },
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWorkoutDay(String fitnessPlanId, WorkoutDay dayPlan) {
-    return ListView.builder(
-      itemCount: dayPlan.exercises.length,
-      itemBuilder: (context, index) {
-        final exercise = dayPlan.exercises[index];
-        return ExerciseListItem(
-          exercise: exercise,
-          onComplete: () async {
-            await _fitnessPlanService.markExerciseAsCompleted(
-              widget.userId,
-              fitnessPlanId,
-              dayPlan.id,
-              exercise.id,
-            );
-            setState(() {
-              exercise.completed = true;
-            });
-          },
-          onChangeExercise: () async {
-            var newExercise = await _fitnessPlanService.changeExercise(
-              widget.userId,
-              fitnessPlanId,
-              dayPlan,
-              exercise,
-            );
-            setState(() {
-              dayPlan.exercises[index] = newExercise;
-            });
-          },
-          onLikeExercise: () async {
-            await _firestoreService.likeExercise(widget.userId, exercise);
-          },
-          onUnlikeExercise: () async {
-            await _firestoreService.unlikeExercise(widget.userId, exercise);
-          },
-        );
-      },
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: currentDayIndex > 0 ? () => setState(() => currentDayIndex--) : null,
+                child: const Text('Previous Day'),
+              ),
+              ElevatedButton(
+                onPressed: currentDayIndex < fitnessPlan.workoutDays.length - 1
+                    ? () => _goToNextDay(fitnessPlan)
+                    : (allExercisesCompleted ? () => _regeneratePlan() : null),
+                child: Text(allExercisesCompleted && currentDayIndex == fitnessPlan.workoutDays.length - 1 ? 'Regenerate Plan' : 'Next Day'),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -224,6 +196,4 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
       ),
     );
   }
-
-  void _replaceExercise(Exercise exercise) {}
 }

@@ -1,6 +1,5 @@
 import 'package:bodybuilderaiapp/common_widget/favorite_exercise_list_item.dart';
 import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
-import 'package:bodybuilderaiapp/model/exercise.dart';
 import 'package:bodybuilderaiapp/model/favorite_exercise.dart';
 import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:bodybuilderaiapp/service/firebase_firestore_http_service.dart';

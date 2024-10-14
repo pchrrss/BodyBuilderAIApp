@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bodybuilderaiapp/model/workout_day.dart'; // Assuming you have the model defined here
+import 'package:bodybuilderaiapp/model/workout_day.dart';
 
 class WorkoutDayProgress extends StatelessWidget {
   final WorkoutDay workoutDay;
@@ -16,35 +16,31 @@ class WorkoutDayProgress extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Text
           Text(
-            workoutDay.day,
+            workoutDay.focusArea,
             style: const TextStyle(
               fontSize: 24,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16), // Spacing between title and progress
-          
-          // Progress Bar
+          const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: List.generate(workoutDay.totalExercises, (index) {
-              return Container(
-                width: 40,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: index < workoutDay.completedExercises ? Colors.green : Colors.grey[600],
-                  borderRadius: BorderRadius.circular(4),
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(end: 4.0),
+                child: Container(
+                  width: 50,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: index < workoutDay.completedExercises ? Colors.green : Colors.grey[600],
+                  ),
                 ),
               );
             }),
           ),
-          
-          const SizedBox(height: 10), // Spacing between progress and status
-
-          // Status Text
+          const SizedBox(height: 10),
           Text(
             'Workouts completed: ${workoutDay.completedExercises} of ${workoutDay.totalExercises}',
             style: const TextStyle(
