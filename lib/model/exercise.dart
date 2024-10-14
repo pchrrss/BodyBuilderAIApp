@@ -1,20 +1,19 @@
-class Exercise {
-  String id;
-  String name;
+import 'package:bodybuilderaiapp/model/base_exercise.dart';
+
+class Exercise extends BaseExercise{
   int sets;
   String reps;
   bool completed;
-  String? instruction;
   DateTime? completedAt;
   Set<String> alreadySuggestedExercises;
 
   Exercise({
-    required this.id,
-    required this.name,
+    required super.id,
+    required super.name,
     required this.sets,
     required this.reps,
     this.completed = false,
-    this.instruction,
+    super.instruction,
     this.completedAt,
     this.alreadySuggestedExercises = const <String>{},
   });
@@ -32,7 +31,7 @@ class Exercise {
     );
   }
 
-
+  @override
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -41,7 +40,7 @@ class Exercise {
       'completed': completed,
       'instruction': instruction,
       'completedAt': completedAt,
-      'alreadySuggestedExercises': alreadySuggestedExercises.toList(),
+      'alreadySuggestedExercises': alreadySuggestedExercises,
     };
   }
 

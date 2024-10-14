@@ -74,6 +74,7 @@ flutter:
     - assets/img/goals/
     - assets/img/bodytypes/
     - assets/img/focusareas/
+    - assets/img/exercises/
     - .env
 
 

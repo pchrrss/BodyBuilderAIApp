@@ -1,4 +1,6 @@
+import 'package:bodybuilderaiapp/model/base_exercise.dart';
 import 'package:bodybuilderaiapp/model/exercise.dart';
+import 'package:bodybuilderaiapp/model/favorite_exercise.dart';
 import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -71,6 +73,7 @@ class FirebaseFirestoreHttpService {
           'sets': exercise['sets'],
           'reps': exercise['reps'],
           'instruction': exercise['instruction'],
+          'alreadySuggestedExercises': [],
         });
       }
     }
@@ -141,5 +144,35 @@ class FirebaseFirestoreHttpService {
       'completed': true,
       'completedAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  Future<void> likeExercise(String userId, BaseExercise exercise) async {
+    await _usersCollection.doc(userId).collection('likedExercises').add({
+      'name': exercise.name,
+      'instruction': exercise.instruction,
+      'likedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> unlikeExercise(String userId, BaseExercise exercise) async {
+    var likedExercise = await _usersCollection.doc(userId).collection('likedExercises').where('name', isEqualTo: exercise.name).get();
+
+    if (likedExercise.docs.isNotEmpty) {
+      await likedExercise.docs.first.reference.delete();
+    }
+  }
+
+  Future<List<FavoriteExercise>> getLikedExercises(String userId) async {
+    var likedExercisesSnapshot = await _usersCollection.doc(userId).collection('likedExercises').get();
+
+    return likedExercisesSnapshot.docs.map((doc) {
+      return FavoriteExercise.from(
+        doc.id,
+        {
+          'name': doc['name'],
+          'instruction': doc['instruction'],
+        },
+      );
+    }).toList();
   }
 }

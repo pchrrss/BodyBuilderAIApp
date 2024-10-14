@@ -13,6 +13,9 @@ class WorkoutDay {
     required this.exercises,
   });
 
+  get totalExercises => exercises.length;
+  get completedExercises => exercises.where((exercise) => exercise.completed).length;
+
   factory WorkoutDay.from(String id, Map<String, dynamic> data, List<Exercise> exercises) {
     return WorkoutDay(
       id: id,
