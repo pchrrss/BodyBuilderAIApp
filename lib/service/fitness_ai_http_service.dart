@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/model/exercise.dart';
+import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -88,9 +89,9 @@ class FitnessAiHttpService {
     };
   }
 
-  Future<Map<String, dynamic>> suggestReplacementExercise(String focusArea, Exercise exerciseToReplace) async {
+  Future<Map<String, dynamic>> suggestReplacementExercise(WorkoutDay workoutDay, Exercise exerciseToReplace) async {
     var url = Uri.parse(apiUrl);
-    var exerciceReplacementRequest = generateExerciseReplacementRequest(focusArea, exerciseToReplace);
+    var exerciceReplacementRequest = generateExerciseReplacementRequest(workoutDay, exerciseToReplace);
     logger.i(exerciceReplacementRequest);
 
     var response = await http.post(
@@ -115,14 +116,15 @@ class FitnessAiHttpService {
     }
   }
 
-  String generateExerciseReplacementRequest(String focusArea, Exercise exerciseToReplace) {
-    String alreadyPresentExercisesJoined = exerciseToReplace.alreadySuggestedExercises.join(', ');
+  String generateExerciseReplacementRequest(WorkoutDay workoutDay, Exercise exerciseToReplace) {
+    Set<String> allAlreadySuggestedExercises = workoutDay.exercises.expand((exercise) => exercise.alreadySuggestedExercises).toSet();
+    String excludedExercises = ([...workoutDay.exercises.map((exercise) => exercise.name), ...allAlreadySuggestedExercises]).join(', ');
 
     return '''
 Your output should be structured as a valid JSON object with detailed values for each field. Key names and values should have no backslashes, and values should use plain ASCII with no special characters.
-I am a person focusing on $focusArea.
+I am a person focusing on ${workoutDay.focusArea}.
 
-Can you provide me a different exercise to replace '${exerciseToReplace.name}', different from these exercises '$alreadyPresentExercisesJoined'
+Can you provide me a different exercise to replace '${exerciseToReplace.name}', different from these exercises '$excludedExercises'
 Generate the response in JSON format using the following structure:
 
 {

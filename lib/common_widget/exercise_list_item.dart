@@ -141,9 +141,6 @@ class _ExerciseListItemState extends State<ExerciseListItem> {
               } else {
                 widget.onLikeExercise();
               }
-              setState(() {
-                // widget.isLiked = !widget.isLiked;
-              });
             },
           ),
         ),
