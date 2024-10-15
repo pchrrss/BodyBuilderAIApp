@@ -49,7 +49,8 @@ Welcome to the **Body Builder AI** app! This is a fitness application that gener
    - Example:
      ```
      GOOGLE_CLIENT_ID=your-google-client-id
-     API_URL=http://localhost:11434/api/generate
+     MODEL_NAME=body-builder-model
+     AI_API_URL=http://localhost:11434/api/generate
      ```
 
 5. **Run the App**

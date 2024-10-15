@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSizeWidget {
   final UserInputModel userInput;
   final String title;
+  final bool automaticallyImplyLeading;
   final List<Widget>? actions;
-  const TransparentAppBarWithBorder({super.key, required this.title, this.actions, required this.userInput});
+  const TransparentAppBarWithBorder({super.key, required this.title, this.actions, required this.userInput, this.automaticallyImplyLeading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSi
       ),
       child: AppBar(
         backgroundColor: TColor.white,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: automaticallyImplyLeading,
         elevation: 0,
         title: Row(
           children: [

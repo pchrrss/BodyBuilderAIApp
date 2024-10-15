@@ -161,6 +161,13 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
                 onPressed: currentDayIndex > 0 ? () => setState(() => currentDayIndex--) : null,
                 child: const Text('Previous Day'),
               ),
+              Text(
+                '${currentDayIndex + 1} / ${fitnessPlan.workoutDays.length}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
               ElevatedButton(
                 onPressed: currentDayIndex < fitnessPlan.workoutDays.length - 1
                     ? () => _goToNextDay(fitnessPlan)

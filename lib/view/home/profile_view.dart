@@ -15,6 +15,7 @@ class ProfileView extends StatelessWidget {
       appBar: TransparentAppBarWithBorder(
         title: 'Profile',
         userInput: userInput,
+        automaticallyImplyLeading: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
