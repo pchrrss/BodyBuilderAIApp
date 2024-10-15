@@ -63,8 +63,6 @@ class _FavoriteExerciseListItemState extends State<FavoriteExerciseListItem> {
 
   Widget _buildExerciseImage() {
     String assetPath = widget.exercise.getExerciseImageAsset(isImageToggled);
-    logger.d(assetPath);
-
     return GestureDetector(
       onTap: () {
         setState(() {
