@@ -1,4 +1,5 @@
 import 'package:bodybuilderaiapp/model/exercise.dart';
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -61,6 +62,31 @@ class FitnessAiHttpService {
       return jsonDecode(data['response']);
     } else {
       throw Exception('Failed to fetch replacement exercise');
+    }
+  }
+
+  Future<String> fetchMotivationalSentence(UserInputModel userInput) async {
+    var url = Uri.parse(apiUrl);
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "model": model,
+        "prompt":
+            "Give me a short and inspiring fitness sentence for someone who is ${userInput.fitnessGoal}. The sentence should be positive and motivating, tailored to their current progress (e.g., 'You're halfway there!' or 'Keep pushing!'). Not more than 50 words. No need to explain. No json format needed. No special characters. Just the sentence.",
+        "temperature": 0.8,
+        "stream": false,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      logger.i(data['response']);
+      return data['response'];
+    } else {
+      throw Exception('Failed to fetch motivational sentence');
     }
   }
 

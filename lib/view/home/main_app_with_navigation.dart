@@ -1,9 +1,9 @@
 import 'package:bodybuilderaiapp/common/color_extension.dart';
-import 'package:bodybuilderaiapp/common_widget/transparent_app_bar_with_border.dart';
 import 'package:bodybuilderaiapp/view/home/activity_screen.dart';
 import 'package:bodybuilderaiapp/view/home/favorite_screen.dart';
 import 'package:bodybuilderaiapp/view/home/fitness_plan_result_screen.dart';
 import 'package:bodybuilderaiapp/model/user_input_model.dart';
+import 'package:bodybuilderaiapp/view/home/home_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,7 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
   void initState() {
     super.initState();
     _pages = [
-      HomeScreen(userInput: widget.userInput),
+      HomeScreen(userId: widget.userId, userInput: widget.userInput),
       FitnessPlanResultScreen(userId: widget.userId, userInput: widget.userInput),
       ActivityScreen(userInput: widget.userInput),
       FavoriteScreen(userId: widget.userId, userInput: widget.userInput)
@@ -80,24 +80,6 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
               label: 'Favorite',
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  final UserInputModel userInput;
-  const HomeScreen({super.key, required this.userInput});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TransparentAppBarWithBorder(title: 'Home', userInput: userInput),
-      body: const Center(
-        child: Text(
-          'Home Screen',
-          style: TextStyle(fontSize: 24),
         ),
       ),
     );
