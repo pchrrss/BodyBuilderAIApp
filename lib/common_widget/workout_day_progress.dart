@@ -34,7 +34,7 @@ class WorkoutDayProgress extends StatelessWidget {
                   width: 50,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: index < workoutDay.completedExercises ? Colors.green : Colors.grey[600],
+                    color: index < workoutDay.completedExercises() ? Colors.green : Colors.grey[600],
                   ),
                 ),
               );
@@ -42,7 +42,7 @@ class WorkoutDayProgress extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Workouts completed: ${workoutDay.completedExercises} of ${workoutDay.totalExercises}',
+            'Workouts completed: ${workoutDay.completedExercises()} of ${workoutDay.totalExercises}',
             style: const TextStyle(
               fontSize: 16,
               color: Colors.black,

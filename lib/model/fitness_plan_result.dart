@@ -35,11 +35,15 @@ class FitnessPlanResult {
     return workoutDays.length - 1;
   }
 
-  bool areAllExercisesCompleted() {
+  bool isCompleted() {
     return workoutDays.every((day) {
       return day.exercises.every((exercise) => exercise.completed);
     });
   }
+
+  int completedWorkoutDays() => workoutDays.where((day) => day.isCompleted()).length;
+  int completedExercises() => workoutDays.fold(0, (sum, day) => sum + day.completedExercises());
+  int totalExercises() => workoutDays.fold(0, (sum, day) => sum + day.exercises.length);
 
   factory FitnessPlanResult.from(String id, Map<String, dynamic> data, List<WorkoutDay> workoutDays) {
     return FitnessPlanResult(

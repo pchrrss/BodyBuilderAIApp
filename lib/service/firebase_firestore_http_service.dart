@@ -5,8 +5,10 @@ import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 import 'package:bodybuilderaiapp/model/workout_day.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bodybuilderaiapp/model/user_input_model.dart';
+import 'package:logger/web.dart';
 
 class FirebaseFirestoreHttpService {
+  final logger = Logger();
   final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('users');
 
   Future<void> saveUserInputs(String userId, UserInputModel userInput) async {
@@ -79,6 +81,20 @@ class FirebaseFirestoreHttpService {
     }
   }
 
+  Future<List<WorkoutDay>> _fetchWorkoutDays(DocumentReference fitnessPlanDoc) async {
+    final workoutDaysQuery = await fitnessPlanDoc.collection('workoutDays').orderBy('day').get();
+
+    return Future.wait(workoutDaysQuery.docs.map((dayDoc) async {
+      final exercisesQuery = await dayDoc.reference.collection('exercises').get();
+
+      final exercises = exercisesQuery.docs.map((exerciseDoc) {
+        return Exercise.from(exerciseDoc.id, exerciseDoc.data());
+      }).toList();
+
+      return WorkoutDay.from(dayDoc.id, dayDoc.data(), exercises);
+    }).toList());
+  }
+
   Future<FitnessPlanResult?> fetchLatestFitnessPlan(String userId) async {
     try {
       final fitnessPlanQuery = await FirebaseFirestore.instance
@@ -90,25 +106,35 @@ class FirebaseFirestoreHttpService {
           .get();
 
       if (fitnessPlanQuery.docs.isEmpty) {
-        print('No fitness plan available.');
+        logger.i('No fitness plan available.');
         return null;
       }
 
       final fitnessPlanDoc = fitnessPlanQuery.docs.first;
-      final workoutDaysQuery = await fitnessPlanDoc.reference.collection('workoutDays').orderBy('day').get();
-      final workoutDays = await Future.wait(workoutDaysQuery.docs.map((dayDoc) async {
-        final exercisesQuery = await dayDoc.reference.collection('exercises').get();
-
-        final exercises = exercisesQuery.docs.map((exerciseDoc) {
-          return Exercise.from(exerciseDoc.id, exerciseDoc.data());
-        }).toList();
-
-        return WorkoutDay.from(dayDoc.id, dayDoc.data(), exercises);
-      }).toList());
+      final workoutDays = await _fetchWorkoutDays(fitnessPlanDoc.reference);
 
       return FitnessPlanResult.from(fitnessPlanDoc.id, fitnessPlanDoc.data(), workoutDays);
     } catch (e) {
-      print('Error fetching or processing fitness plan: $e');
+      logger.e('Error fetching or processing fitness plan: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<FitnessPlanResult>> fetchAllFitnessPlans(String userId) async {
+    try {
+      final fitnessPlanQuery = await _usersCollection.doc(userId).collection('fitnessPlans').orderBy('createdAt', descending: true).get();
+
+      if (fitnessPlanQuery.docs.isEmpty) {
+        logger.i('No fitness plans available.');
+        return [];
+      }
+
+      return await Future.wait(fitnessPlanQuery.docs.map((fitnessPlanDoc) async {
+        final workoutDays = await _fetchWorkoutDays(fitnessPlanDoc.reference);
+        return FitnessPlanResult.from(fitnessPlanDoc.id, fitnessPlanDoc.data(), workoutDays);
+      }).toList());
+    } catch (e) {
+      logger.e('Error fetching or processing fitness plans: $e');
       rethrow;
     }
   }

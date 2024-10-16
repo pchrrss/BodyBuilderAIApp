@@ -38,7 +38,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
     fitnessPlanFuture!.then((fitnessPlan) {
       setState(() {
         currentDayIndex = fitnessPlan.findFirstUncompletedDay();
-        allExercisesCompleted = fitnessPlan.areAllExercisesCompleted();
+        allExercisesCompleted = fitnessPlan.isCompleted();
       });
     });
   }
@@ -119,7 +119,7 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
                   );
                   setState(() {
                     exercise.completed = true;
-                    allExercisesCompleted = fitnessPlan.areAllExercisesCompleted();
+                    allExercisesCompleted = fitnessPlan.isCompleted();
                     if (allExercisesCompleted) {
                       currentDayIndex = fitnessPlan.findFirstUncompletedDay();
                     }

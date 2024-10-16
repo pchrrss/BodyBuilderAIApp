@@ -28,7 +28,7 @@ class _MainAppWithNavigationState extends State<MainAppWithNavigation> {
     _pages = [
       HomeScreen(userId: widget.userId, userInput: widget.userInput),
       FitnessPlanResultScreen(userId: widget.userId, userInput: widget.userInput),
-      ActivityScreen(userInput: widget.userInput),
+      ActivityScreen(userId: widget.userId, userInput: widget.userInput),
       FavoriteScreen(userId: widget.userId, userInput: widget.userInput)
     ];
   }

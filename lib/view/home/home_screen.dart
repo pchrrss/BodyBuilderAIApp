@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Center(
-          child: fitnessPlan.areAllExercisesCompleted()
+          child: fitnessPlan.isCompleted()
               ? Text(
                   'No active fitness plan. Why not start a new one?',
                   style: TextStyle(fontSize: 18, color: TColor.grey),
@@ -78,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCircularProgressBar(FitnessPlanResult fitnessPlan) {
     int totalDays = fitnessPlan.workoutDays.length;
-    int completedDays = fitnessPlan.workoutDays.where((day) => day.exercises.every((exercise) => exercise.completed)).length;
-    int totalExercises = fitnessPlan.workoutDays.fold(0, (sum, day) => sum + day.exercises.length);
-    int completedExercises = fitnessPlan.workoutDays.fold(0, (sum, day) => sum + day.exercises.where((exercise) => exercise.completed).length);
+    int completedDays = fitnessPlan.completedWorkoutDays();
+    int totalExercises = fitnessPlan.totalExercises();
+    int completedExercises = fitnessPlan.completedExercises();
 
     double progress = completedExercises / totalExercises;
 
