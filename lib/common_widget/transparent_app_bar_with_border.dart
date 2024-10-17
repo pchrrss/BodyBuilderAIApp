@@ -7,8 +7,15 @@ class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSi
   final UserInputModel userInput;
   final String title;
   final bool automaticallyImplyLeading;
+  final bool withProfileButton;
   final List<Widget>? actions;
-  const TransparentAppBarWithBorder({super.key, required this.title, this.actions, required this.userInput, this.automaticallyImplyLeading = false});
+  const TransparentAppBarWithBorder(
+      {super.key,
+      required this.title,
+      this.actions,
+      required this.userInput,
+      this.automaticallyImplyLeading = false,
+      this.withProfileButton = true});
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +53,15 @@ class TransparentAppBarWithBorder extends StatelessWidget implements PreferredSi
         ),
         actions: [
           if (actions != null) ...actions!,
-          IconButton(
+          if (withProfileButton) IconButton(
             icon: const Icon(Icons.manage_accounts),
             onPressed: () {
               Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileView(userInput: userInput),
-                    ),
-                  );
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileView(userInput: userInput),
+                ),
+              );
             },
           ),
         ],

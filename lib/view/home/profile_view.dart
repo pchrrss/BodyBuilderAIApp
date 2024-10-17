@@ -16,6 +16,7 @@ class ProfileView extends StatelessWidget {
         title: 'Profile',
         userInput: userInput,
         automaticallyImplyLeading: true,
+        withProfileButton: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

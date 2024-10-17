@@ -47,7 +47,6 @@ class _FitnessPlanResultScreenState extends State<FitnessPlanResultScreen> {
     var favoriteExercises = await _firestoreService.getLikedExercises(widget.userId);
     setState(() {
       favoriteExerciseNames = favoriteExercises.map((fav) => fav.name).toList();
-      log.i('Favorite exercises: $favoriteExerciseNames');
     });
   }
 

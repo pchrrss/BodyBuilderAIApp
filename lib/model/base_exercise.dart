@@ -16,7 +16,7 @@ abstract class BaseExercise {
   String getExerciseImageAsset(bool isImageToggled) {
     String fileName = name.replaceAll(' ', '_');
     var bestMatch = fileName.bestMatch(baseExerciseList);
-    logger.i('$fileName bestMatch ${bestMatch.bestMatch.target} ${bestMatch.bestMatch.rating}');
+    logger.d('$fileName bestMatch ${bestMatch.bestMatch.target} ${bestMatch.bestMatch.rating}');
     if (bestMatch.bestMatch.rating! > 0.5) {
       return 'assets/img/exercises/${bestMatch.bestMatch.target}_${isImageToggled ? '0' : '1'}.jpg';
     }

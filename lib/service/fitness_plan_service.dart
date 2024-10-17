@@ -11,7 +11,7 @@ class FitnessPlanService {
 
   Future<FitnessPlanResult> fetchOrGenerateFitnessPlan(String userId, UserInputModel userInput) async {
     var existingPlan = await _firestoreService.fetchLatestFitnessPlan(userId);
-    if (existingPlan != null) {
+    if (existingPlan != null && existingPlan.isUpToDate(userInput)) {
       return existingPlan;
     }
 
@@ -26,7 +26,7 @@ class FitnessPlanService {
     final fitnessPlanRequest = userInput.generateFitnessPlanRequest();
     var newPlan = await _httpService.generateFitnessPlan(fitnessPlanRequest);
 
-    await _firestoreService.saveFitnessPlan(userId, newPlan);
+    await _firestoreService.saveFitnessPlan(userId, userInput, newPlan);
 
     var latestPlan = await _firestoreService.fetchLatestFitnessPlan(userId);
     if (latestPlan == null) {

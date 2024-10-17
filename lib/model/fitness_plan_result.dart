@@ -1,3 +1,4 @@
+import 'package:bodybuilderaiapp/model/user_input_model.dart';
 import 'package:bodybuilderaiapp/model/workout_day.dart';
 
 class FitnessPlanResult {
@@ -72,5 +73,15 @@ class FitnessPlanResult {
       'createdAt': createdAt,
       'workout_plan': workoutDays.map((day) => day.toJson()).toList(),
     };
+  }
+
+  bool isUpToDate(UserInputModel userInput) {
+    return ageRange == userInput.ageRange &&
+        bodyType == userInput.bodyType &&
+        goal == userInput.fitnessGoal &&
+        bodyFatRange == userInput.bodyFatRange &&
+        fitnessLevel == userInput.fitnessLevel &&
+        equipment == userInput.equipment &&
+        workoutFrequencyPerWeek == userInput.workoutDays;
   }
 }

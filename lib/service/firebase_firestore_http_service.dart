@@ -45,17 +45,17 @@ class FirebaseFirestoreHttpService {
     }
   }
 
-  Future<void> saveFitnessPlan(String userId, Map<String, dynamic> fitnessPlanData) async {
+  Future<void> saveFitnessPlan(String userId, UserInputModel userInput, Map<String, dynamic> fitnessPlanData) async {
     final fitnessPlanDocRef = _usersCollection.doc(userId).collection('fitnessPlans').doc();
 
     fitnessPlanDocRef.set({
-      'ageRange': fitnessPlanData['age_range'],
-      'bodyType': fitnessPlanData['body_type'],
-      'goal': fitnessPlanData['goal'],
-      'bodyFatRange': fitnessPlanData['body_fat_range'],
-      'fitnessLevel': fitnessPlanData['fitness_level'],
-      'equipment': fitnessPlanData['equipment'],
-      'workoutFrequencyPerWeek': fitnessPlanData['workout_frequency_per_week'],
+      'ageRange': userInput.ageRange,
+      'bodyType': userInput.bodyType,
+      'goal': userInput.fitnessGoal,
+      'bodyFatRange': userInput.bodyFatRange,
+      'fitnessLevel': userInput.fitnessLevel,
+      'equipment': userInput.equipment,
+      'workoutFrequencyPerWeek': userInput.workoutDays,
       'createdAt': FieldValue.serverTimestamp(),
     });
 

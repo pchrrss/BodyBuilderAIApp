@@ -3,6 +3,7 @@ import 'package:bodybuilderaiapp/view/home/history_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:bodybuilderaiapp/model/fitness_plan_result.dart';
 import 'package:intl/intl.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class HistoryScreen extends StatefulWidget {
   final List<FitnessPlanResult> fitnessPlans;
@@ -73,30 +74,37 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildExerciseHistory() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: completedExercisesByMonth.length,
-        itemBuilder: (context, index) {
-          String monthYear = completedExercisesByMonth.keys.elementAt(index);
-          List<Exercise> exercises = completedExercisesByMonth[monthYear]!;
+Widget _buildExerciseHistory() {
+  return Expanded(
+    child: ListView.builder(
+      itemCount: completedExercisesByMonth.length,
+      itemBuilder: (context, index) {
+        String monthYear = completedExercisesByMonth.keys.elementAt(index);
+        List<Exercise> exercises = completedExercisesByMonth[monthYear]!;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        return StickyHeader(
+          header: Container(
+            color: Colors.white,
+            child: Row(
+              children: [
+                Text(
+                  monthYear,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          content: Column(
             children: [
-              Text(
-                monthYear,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
               ...exercises.map((exercise) => _buildExerciseListItem(exercise)),
               const SizedBox(height: 20),
             ],
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildExerciseListItem(Exercise exercise) {
     return ListTile(
