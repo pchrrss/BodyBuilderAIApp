@@ -119,7 +119,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
       title: Text(exercise.name),
       subtitle: Text(
-        DateFormat('E, dd MMM  H:m').format(exercise.completedAt ?? DateTime.now()),
+        DateFormat('E, dd MMM  H:mm').format(exercise.completedAt ?? DateTime.now()),
         style: const TextStyle(color: Colors.grey),
       ),
     );
